@@ -3,11 +3,11 @@ import random
 import json
 
 class Student:
-    def __init__(self, name, email, password, subject = None, from_file = False):
+    def __init__(self, name, email, password, subject=[], from_file = False):
         self.name = name
         self.email = email
         self.password = password
-        self.subject = subject if subject is not None else []
+        self.subject = subject
         #self.subject = []
         if not from_file:
             self.generate_student_id()
@@ -34,20 +34,45 @@ class Student:
         if len(self.subject) >= 4:
             print("You have already enrolled in 4 subjects. You cannot enrol in more.")
         else:
-            self.subject.append(subject)
-            print(f"You have successfully enrolled in {subject}.")
+            random_number = str(random.randint(0, 999)).zfill(3)
+            # 检查生成的数字是否重复
+            while any(subject.endswith(f"_{random_number}") for subject in self.subject):
+                random_number = str(random.randint(0, 999)).zfill(3)
+            # 将随机数字添加到subject中
+            subject_with_number = f"{random_number}.{subject}"
+            mark = random.randint(25, 100)
+            # 根据分数计算等级
+            if mark < 50:
+                grade = "Z"
+            elif mark < 65:
+                grade = "P"
+            elif mark < 75:
+                grade = "C"
+            elif mark < 85:
+                grade = "D"
+            else:
+                grade = "HD"
+
+            subject_with_grade = f"{subject_with_number} - Mark: {mark}, Grade: {grade}"
+
+            self.subject.append(subject_with_grade)
+            print(f"You have successfully enrolled in {subject_with_number}.")
+            self.save_students_file()
 
     def remove_subject(self, subject):
         if subject in self.subject:
             self.subject.remove(subject)
             print(f"You have successfully removed {subject} from your enrolment list.")
+            self.save_students_file()
         else:
             print(f"You are not enrolled in {subject}.")
 
     def show_enrolment(self):
         print("You are currently enrolled in the following subjects:")
         for subject in self.subject:
-            print(subject)
+            # 提取Mark和grade
+            print(f"{subject}")
+
 
     def save_students_file(self):
         #__dict__ 能将每个 student 对象转换为字典形式
