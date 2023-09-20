@@ -3,14 +3,15 @@ import random
 import json
 
 class Student:
-    def __init__(self, name, email, password, subject = None):
+    def __init__(self, name, email, password, subject = None, from_file = False):
         self.name = name
         self.email = email
         self.password = password
         self.subject = subject if subject is not None else []
         #self.subject = []
-        self.generate_student_id()
-        self.save_students_file()
+        if not from_file:
+            self.generate_student_id()
+            self.save_students_file()
 
 
     def generate_student_id(self):
@@ -82,7 +83,7 @@ def main():
                 id = student_data['student_id']
                 del student_data['student_id']
 
-                student = Student(**student_data)
+                student = Student(**student_data, from_file = True)
                 student.student_id = id
                 students.append(student)
 
@@ -92,7 +93,10 @@ def main():
 
 
     while True:
-        print(f"{students}")
+        #print(f"{students}") # Print the list of students for testing purposes, need to delete in the final version
+        print("Current student list:")
+        for s in students:
+            print(s)
         print("Welcome to the University Enrollment System")
         print("1. Login")
         print("2. Register a new student")
@@ -160,9 +164,9 @@ def main():
             print(student)
             student.save_students_file()
 
-            print("Current student list:")
-            for s in students:
-                print(s)
+            #print("Current student list:") #This function should me migrate to the admin session.
+            #for s in students:
+            #    print(s)
                 
         elif choice == '3':
             print("Exiting the program.")
