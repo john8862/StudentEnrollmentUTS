@@ -30,6 +30,11 @@ class Student:
         password_pattern = r'^[A-Z][a-zA-Z]{4,}[0-9]{3,}$'
         return re.match(password_pattern, password)
 
+    @staticmethod
+    def is_valid_subject(subject):
+        subject_pattern = r'^[a-zA-Z ]*$'
+        return re.match(subject_pattern, subject)
+    
     def enrol_subject(self, subject):
         if len(self.subject) >= 4:
             print("You have already enrolled in 4 subjects. You cannot enrol in more.")
@@ -143,7 +148,12 @@ def main():
                         print("5. Logout")
                         choice = input("Select an option: ")
                         if choice == "1":
-                            subject = input("Enter the subject you want to enrol in: ")
+                            while True:
+                                subject = input("Enter the subject you want to enrol in: ")
+                                if not Student.is_valid_subject(subject):
+                                    print("Invalid subject format. Subject must only contain letters and spaces.")
+                                else:
+                                    break
                             student.enrol_subject(subject)
                         elif choice == "2":
                             subject = input("Enter the subject you want to remove:  ")
