@@ -1,23 +1,43 @@
+import os
 import json
+import tkinter.messagebox as msgbox
 
 class MysqlDatabases:
     def __init__(self):
+        self.check_users_file()
+
         with open('users.json', mode='r', encoding='utf-8') as f:
             text = f.read()
         self.users = json.loads(text)
+
+    def check_users_file(self):
+        if not os.path.exists('users.json'):
+            with open("users.json", mode='w', encoding='utf-8') as f:
+                f.write('[]')
     
-    def verify_login(self, email, password):
+    def verify_student_login(self, email, password):
         for user in self.users:
-            if email == user['email']: 
+            if email.lower() == user['email'].lower(): 
                 if password == user['password']:
                     return True, "Login successful!"
                 else:
                     return False, "Login failed! Invalid password!"
         return False, "Login failed! Invalid username!"
-    
+
+    def verify_admin_login(self, username, password):
+        with open('admin.json', mode='r', encoding='utf-8') as f:
+            admin_data = json.load(f)
+        for admin in admin_data:
+            if username.lower() == admin['username'].lower():
+                if password == admin['password']:
+                    return True, "Login successful!"
+                else:
+                    return False, "Login failed! Invalid password!"
+        return False, "Login failed! Invalid username!"
+
     def create_newuser(self, name, email, password):
         for user in self.users:
-            if email == user['email']:
+            if email == user['email'].lower():
                 return False, "User already exists. Please login instead."
         
         # Generate a unique student ID
@@ -29,8 +49,7 @@ class MysqlDatabases:
             "email": email,
             "password": password,
             "student_id": student_id,
-            "subjects": [],
-            "role": "student"  # Assign the role of "student" by default
+            "subjects": []
         }
 
         # Add the new user to the users list
@@ -38,11 +57,20 @@ class MysqlDatabases:
 
         # Save the users list to the users.json file
         with open('users.json', mode='w', encoding='utf-8') as f:
-            f.write(json.dumps(self.users))
+            json.dump(self.users, f, indent=4)
+            
 
-        return True, "Registration successful!"
+        success_message = "Registration successful!\n\n"
+        success_message += f"Name: {name}\n"
+        success_message += f"Email: {email}\n"
+        success_message += f"Student ID: {student_id}\n"
+        success_message += f"Password: {password}\n"
+        success_message += "\nPlease keep a record of your personal information above."
+        success_message += "\n\nPlease login to continue."
+
+        return True, success_message
     
 db = MysqlDatabases()
 
 if __name__ == '__main__':
-   print(db.verify_login('sherlock.zhao@university.com', '123456'))
+   db.verify_student_login('sherlock.zhao@university.com', 'Abcde123')

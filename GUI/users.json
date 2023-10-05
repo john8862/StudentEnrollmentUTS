@@ -1,1 +1,16 @@
-[{"name": "Sherlock Zhao", "email": "sherlock.zhao@university.com", "password": "123456", "student_id": "0000001","subject":[], "role":"student"}]
+[
+    {
+        "name": "Sherlock Zhao",
+        "email": "sherlock.zhao@university.com",
+        "password": "Atest123",
+        "student_id": "000001",
+        "subjects": []
+    },
+    {
+        "name": "Yulong Lin",
+        "email": "yulong.lin@university.com",
+        "password": "Atest123",
+        "student_id": "000002",
+        "subjects": []
+    }
+]
