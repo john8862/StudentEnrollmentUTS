@@ -5,18 +5,18 @@ from PIL import ImageTk, Image
 class SignInPage:
 
     def __init__(self, master):
-        self.root = master
+        self.login = master
         self.initialize_window()
         self.create_widgets()
         self.configure_widgets()
 
     def initialize_window(self):
-        x = int(self.root.winfo_screenwidth() / 3 - self.root.winfo_reqwidth() / 3)
-        y = int(self.root.winfo_screenheight() / 3 - self.root.winfo_reqheight() / 3)
+        x = int(self.login.winfo_screenwidth() / 3 - self.login.winfo_reqwidth() / 3)
+        y = int(self.login.winfo_screenheight() / 3 - self.login.winfo_reqheight() / 3)
 
-        self.root.title("University Enrollment System v0.0.2")
-        self.root.geometry(f"990x660+{x}+{y}")
-        self.root.resizable(0, 0)
+        self.login.title("University Enrollment System v0.0.2")
+        self.login.geometry(f"990x660+{x}+{y}")
+        self.login.resizable(0, 0)
 
     def create_widgets(self):
         self.create_background_image()
@@ -41,11 +41,11 @@ class SignInPage:
 
     def create_background_image(self):
         self.bgImage = ImageTk.PhotoImage(file="Image/bg.jpg")
-        bgLabel = tk.Label(self.root, image=self.bgImage)
+        bgLabel = tk.Label(self.login, image=self.bgImage)
         bgLabel.place(x=0, y=0, relwidth=1, relheight=1)
 
     def create_heading_label(self):
-        self.heading = tk.Label(self.root, text="STUDENT LOGIN", font=("Helvetica", 25, "bold"), bg="white", fg="firebrick1")
+        self.heading = tk.Label(self.login, text="STUDENT LOGIN") 
         self.heading.place(x=590, y=140)
 
     def create_username_entry(self):
@@ -53,48 +53,48 @@ class SignInPage:
         self.username_entry.place(x=580, y=220)
         self.username_entry.bind("<FocusIn>", self.on_username_entry_click)
         self.username_entry.bind("<FocusOut>", self.on_username_entry_leave)
-        tk.Frame(self.root, width=230, height=2, bg="firebrick1").place(x=580, y=240)  # Add frame widget
+        tk.Frame(self.login, width=230, height=2, bg="firebrick1").place(x=580, y=240)  # Add frame widget
 
     def create_password_entry(self):
         self.password_entry = self.create_entry("Password", "firebrick1", show=None)
         self.password_entry.place(x=580, y=290)
         self.password_entry.bind("<FocusIn>", self.on_password_entry_click)  # Change the event handler
         self.password_entry.bind("<FocusOut>", self.on_password_entry_leave)  # Change the event handler
-        tk.Frame(self.root, width=230, height=2, bg="firebrick1").place(x=580, y=310)  # Add frame widget
+        tk.Frame(self.login, width=230, height=2, bg="firebrick1").place(x=580, y=310)  # Add frame widget
 
     def closeeye_label(self):
         self.closeeye = ImageTk.PhotoImage(file="Image/closeye.png")
         self.openeye = ImageTk.PhotoImage(file="Image/openeye.png")
         self.show_password = False
 
-        self.closeeye_label = tk.Label(self.root, image=self.closeeye)
+        self.closeeye_label = tk.Label(self.login, image=self.closeeye)
         self.closeeye_label.place(x=785, y=286)
         self.closeeye_label.bind("<Button-1>", lambda event: self.toggle_password_visibility())
 
     def forgot_password_label(self):
-        self.forgot_password_label = tk.Label(self.root, text="Forgot Password?")
+        self.forgot_password_label = tk.Label(self.login, text="Forgot Password?")
         self.forgot_password_label.place(x=715, y=321)
         self.forgot_password_label.bind("<Button-1>", lambda event: self.forgort_password())
 
     def login_button(self):
-        self.login_button = tk.Button(self.root, text="Login")
+        self.login_button = tk.Button(self.login, text="Login")
         self.login_button.place(x=580, y=380)
 
     def signup_label(self):
-        self.signup_label = tk.Label(self.root, text="Don't have a student account?")
+        self.signup_label = tk.Label(self.login, text="Don't have a student account?")
         self.signup_label.place(x=585, y=450)
 
     def create_account_label(self):
-        self.create_account_label = tk.Label(self.root, text="Create new one")
+        self.create_account_label = tk.Label(self.login, text="Create new one")
         self.create_account_label.place(x=735, y=450)
     
     def create_entry(self, default_text, text_color, show=None):
-        entry = tk.Entry(self.root, fg=text_color, show=show if show else None)
+        entry = tk.Entry(self.login, fg=text_color, show=show if show else None)
         entry.insert(0, default_text)
         return entry
 
     def configure_heading_label(self):
-        pass  # Configure label properties here, if needed
+        self.heading.config(font=("Helvetica", 25, "bold"), bg="white", fg="firebrick1")
 
     def configure_username_entry(self):
         self.username_entry.config(width=25, font=("Helvetica", 15), bg="white", bd=0, highlightthickness=0)
@@ -156,6 +156,6 @@ class SignInPage:
         self.show_password = not self.show_password
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    login_page = SignInPage(root)
-    root.mainloop()
+    login = tk.Tk()
+    login_page = SignInPage(login)
+    login.mainloop()
