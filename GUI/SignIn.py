@@ -177,7 +177,10 @@ class SignInPage:
             entry.config(show='')  # Hide "*" when not focused
 
     def forgort_password(self):
-        pass
+        window = tk.Toplevel()
+        from ForgotPassword import ForgotPasswordPage
+        change_password = ForgotPasswordPage(window)
+        window.mainloop()
 
     def toggle_password_visibility(self):
         if self.show_password:
