@@ -45,11 +45,11 @@ class MysqlDatabases:
 
         # Create a new user
         new_user = {
-            "name": name,
-            "email": email,
-            "password": password,
-            "student_id": student_id,
-            "subjects": []
+            "Name": name,
+            "Email": email,
+            "Password": password,
+            "Student_id": student_id,
+            "Subjects": []
         }
 
         # Add the new user to the users list
@@ -69,6 +69,15 @@ class MysqlDatabases:
         success_message += "\n\nPlease login to continue."
 
         return True, success_message
+    
+    def change_password(self, email, password):
+        for user in self.users:
+            if email == user['Email']:
+                user['Password'] = password
+                with open('./students.data', mode='w', encoding='utf-8') as f:
+                    json.dump(self.users, f, indent=4)
+                return True, "Password changed successfully!"
+        return False, "Password change failed! Invalid email!"
     
 db = MysqlDatabases()
 

@@ -1,9 +1,9 @@
 [
     {
-        "name": "Sherlock Zhao",
-        "email": "sherlock.zhao@university.com",
-        "password": "Admin123",
-        "student_id": "000001",
-        "subjects": []
+        "Name": "Sherlock Zhao",
+        "Email": "sherlock.zhao@university.com",
+        "Password": "Admin456",
+        "Student_id": "000001",
+        "Subjects": []
     }
 ]
