@@ -2,7 +2,8 @@ import tkinter as tk
 import tkinter.messagebox as msgbox
 import re
 from PIL import ImageTk, Image
-
+from db import db
+from __init__ import set_button_cursor
 
 class SignUpPage:
 
@@ -10,6 +11,7 @@ class SignUpPage:
         self.signup = master
         self.initialize_window()
         self.create_widgets()
+        self.db = db
         self.validation_rules = {
             "Name": {
                 "required": True,
@@ -113,7 +115,7 @@ class SignUpPage:
         return error
 
     def create_signup_button(self):
-        self.signup_button = tk.Button(self.frame, text="Sign Up")
+        self.signup_button = tk.Button(self.frame, text="Sign Up", command=self.Register)
         self.signup_button.grid(row=10, column=1, pady=20)
         self.signup_button.config(
             font=("Helvetica", 15, "bold"),
@@ -124,8 +126,9 @@ class SignUpPage:
             highlightthickness=0,  # Set to 0 to remove the default border
             activebackground="firebrick1",
             activeforeground="white",
-            cursor="pointinghand"
+            # cursor="pointinghand"
         )
+        set_button_cursor(self.signup_button)
 
     def already_have_account_label(self):
         self.already_have_account = tk.Label(self.frame, text="Already have an account?")
@@ -152,6 +155,9 @@ class SignUpPage:
             activeforeground="blue",
             cursor="pointinghand"
         )
+        set_button_cursor(self.login)
+        self.login.bind("<Button-1>", lambda event: self.GoBack())
+
     def on_entry_click(self, event, field_name):
         entry = event.widget
         current_text = entry.get()
@@ -243,6 +249,40 @@ class SignUpPage:
         if rules["validation_function"]:
             return rules["validation_function"]()
         return True
+    
+    def Register(self):
+        if self.entry_fields["Name"].get() == "Name" or self.validate_field("Name") == False:
+            msgbox.showerror("Error", "Please enter your name!")
+            return
+        
+        elif self.validate_field("Email") == False:
+            msgbox.showerror("Error", "Please change the email first!")
+            return
+        
+        elif self.validate_field("Password") == False:
+            msgbox.showerror("Error", "Please correct the password first!")
+            return
+        
+        elif self.validate_field("Confirm Password") == False:
+            msgbox.showerror("Error", "Passwords do not match.")
+            return
+        
+        elif all([self.validate_field(field_name) for field_name in self.validation_rules.keys()]):
+            success, message = self.db.create_newuser(self.entry_fields["Name"].get(), self.entry_fields["Email"].get(), self.entry_fields["Password"].get())
+            if success:
+                msgbox.showinfo(title="Success", message=message)
+                self.signup.destroy()
+                from SignIn import SignInPage
+                login_page = SignInPage(tk.Tk())
+                # login_page.mainloop()
+            else:
+                msgbox.showerror(title="Error", message=message)
+
+    def GoBack(self):
+        self.signup.destroy()
+        from SignIn import SignInPage
+        login_page = SignInPage(tk.Tk())
+        # login_page.mainloop()
 
 if __name__ == "__main__":
     signup = tk.Tk()

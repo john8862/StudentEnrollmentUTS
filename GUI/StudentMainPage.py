@@ -1,7 +1,7 @@
 import tkinter as tk
 
 class MainPage:
-    def __init__(self, master: tk.Tk):
+    def __init__(self, master):
         self.root = master
         self.root.title("Univeristy Enrollment System v0.0.1")
         self.root.geometry(f"800x600")

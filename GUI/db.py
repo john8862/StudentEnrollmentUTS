@@ -6,13 +6,13 @@ class MysqlDatabases:
     def __init__(self):
         self.check_users_file()
 
-        with open('users.json', mode='r', encoding='utf-8') as f:
+        with open('./students.data', mode='r', encoding='utf-8') as f:
             text = f.read()
         self.users = json.loads(text)
 
     def check_users_file(self):
-        if not os.path.exists('users.json'):
-            with open("users.json", mode='w', encoding='utf-8') as f:
+        if not os.path.exists('./students.data'):
+            with open("./students.data", mode='w', encoding='utf-8') as f:
                 f.write('[]')
     
     def verify_student_login(self, email, password):
@@ -55,8 +55,8 @@ class MysqlDatabases:
         # Add the new user to the users list
         self.users.append(new_user)
 
-        # Save the users list to the users.json file
-        with open('users.json', mode='w', encoding='utf-8') as f:
+        # Save the users list to the ./students.data file
+        with open('./students.data', mode='w', encoding='utf-8') as f:
             json.dump(self.users, f, indent=4)
             
 
