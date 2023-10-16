@@ -17,8 +17,8 @@ class MysqlDatabases:
     
     def verify_student_login(self, email, password):
         for user in self.users:
-            if email.lower() == user['email'].lower(): 
-                if password == user['password']:
+            if email.lower() == user['Email'].lower(): 
+                if password == user['Password']:
                     return True, "Login successful!"
                 else:
                     return False, "Login failed! Invalid password!"
