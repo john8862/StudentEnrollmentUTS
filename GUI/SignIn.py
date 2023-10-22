@@ -139,7 +139,6 @@ class SignInPage:
             bd=0, 
             highlightthickness=0, 
             activebackground="white", 
-            cursor="pointinghand"
             )
         set_button_cursor(self.create_account_label)
         self.create_account_label.bind("<Button-1>", lambda event: self.RegisterAction())

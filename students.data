@@ -1,9 +1,33 @@
 [
     {
-        "Name": "Sherlock Zhao",
-        "Email": "sherlock.zhao@university.com",
-        "Password": "Admin456",
-        "Student_id": "000001",
-        "Subjects": []
+        "name": "Yulong Lin",
+        "email": "Yulong.Lin@university.com",
+        "password": "QWASZX123456",
+        "subject": [
+            "Software::506 -- Mark = 92.31 -- Grade = HD",
+            "Sensor::791 -- Mark = 85.22 -- Grade = HD",
+            "math::676 -- Mark = 48.19 -- Grade = Z",
+            "Robotics::230 -- Mark = 74.1 -- Grade = C"
+        ],
+        "student_id": "000001"
+    },
+    {
+        "name": "Sherlock Zhao",
+        "email": "Sherlock.Zhao@university.com",
+        "password": "QWASZX123456",
+        "subject": [
+            "database::194 -- Mark = 100 -- Grade = HD",
+            "Economic Evaluate::316 -- Mark = 42 -- Grade = Z"
+        ],
+        "student_id": "000002"
+    },
+    {
+        "name": "Bai Cai",
+        "email": "Bai.Cai@university.com",
+        "password": "QWASZX123456",
+        "subject": [
+            "MATH::116 -- Mark = 38.4 -- Grade = Z"
+        ],
+        "student_id": "000003"
     }
 ]
