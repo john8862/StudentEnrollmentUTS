@@ -1,5 +1,6 @@
 import os
 import json
+import random
 import tkinter.messagebox as msgbox
 
 class MysqlDatabases:
@@ -17,8 +18,8 @@ class MysqlDatabases:
     
     def verify_student_login(self, email, password):
         for user in self.users:
-            if email.lower() == user['Email'].lower(): 
-                if password == user['Password']:
+            if email.lower() == user["email"].lower(): 
+                if password == user["password"]:
                     return True, "Login successful!"
                 else:
                     return False, "Login failed! Invalid password!"
@@ -45,11 +46,11 @@ class MysqlDatabases:
 
         # Create a new user
         new_user = {
-            "Name": name,
-            "Email": email,
-            "Password": password,
-            "Student_id": student_id,
-            "Subjects": []
+            "name": name,
+            "email": email,
+            "password": password,
+            "student_id": student_id,
+            "subjects": []
         }
 
         # Add the new user to the users list
@@ -72,8 +73,8 @@ class MysqlDatabases:
     
     def change_password(self, email, password):
         for user in self.users:
-            if email == user['Email']:
-                user['Password'] = password
+            if email == user['email']:
+                user['password'] = password
                 with open('./students.data', mode='w', encoding='utf-8') as f:
                     json.dump(self.users, f, indent=4)
                 return True, "Password changed successfully!"

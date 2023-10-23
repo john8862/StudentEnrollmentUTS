@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from tkinter import messagebox as msgbox
 from PIL import Image
 from Validation import Validator
 from Widgets import *
@@ -37,7 +38,7 @@ class SignUpPage:
         self.heading = CustomLabel(self.registerFrame.get(), "heading", "Create New Account", "#FF6633", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
         self.subHeading = CustomLabel(self.registerFrame.get(), "Subheading", "Sign up a new student account", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
 
-        self.nameLabel = CustomLabel(self.registerFrame.get(), "name", "Name:", "#FF6633", "labelFont", "w", "w", pady=(38, 0), padx=(25, 0), justify="left", image=self.nameIcon, compound="left")
+        self.nameLabel = CustomLabel(self.registerFrame.get(), "name", "Name:", "#FF6633", "labelFont", "w", "w", pady=(18, 0), padx=(25, 0), justify="left", image=self.nameIcon, compound="left")
         self.nameEntry = CustomEntry(self.registerFrame.get(), "name", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
         self.nameEntryError = CustomLabel(self.registerFrame.get(), "name", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
@@ -53,7 +54,8 @@ class SignUpPage:
         self.confirmPasswordEntry = CustomEntry(self.registerFrame.get(), "confirmPassword", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
         self.confirmPasswordEntryError = CustomLabel(self.registerFrame.get(), "confirmPassword", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.registerButton = CustomButton(self.registerFrame.get(), 225, "Sign Up", "#FF6633", "#E44982", "#ffffff", "buttonFont", "w", pady=(25, 0), padx=(25, 0))
+        self.registerButton = CustomButton(self.registerFrame.get(), 225, "Sign Up", "#FF6633", "#E44982", "#ffffff", "buttonFont", "w", self.SignUpAction, pady=(15, 0), padx=(25, 0))
+        self.goBackButton = CustomButton(self.registerFrame.get(), 225, "Go Back", "#EEEEEE", "#c0c0c0", "#601E88", "buttonFont", "w", self.GoBack, pady=(15, 0), padx=(25, 0))
 
     def bindValidationEvents(self):
         self.nameEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("name"))
@@ -83,6 +85,40 @@ class SignUpPage:
             self.confirmPasswordEntry.get().configure(bg_color="#FFFFFF", text_color="#000000")
             self.confirmPasswordEntryError.get().configure(text="")
 
+    def SignUpAction(self):
+        nameError = self.nameEntryError.LabelField["name"].cget("text")
+        emailError = self.emailEntryError.LabelField["email"].cget("text")
+        passwordError = self.passwordEntryError.LabelField["password"].cget("text")
+        confirmPasswordError = self.confirmPasswordEntryError.LabelField["confirmPassword"].cget("text")
+
+        if nameError:
+            msgbox.showerror("Error", "Name is required!")
+        elif emailError:
+            msgbox.showerror("Error", "Please enter a valid email address!")
+        elif passwordError:
+            msgbox.showerror("Error", "Please enter a valid password!")
+        elif confirmPasswordError:
+            msgbox.showerror("Error", "Passwords do not match!")
+
+        else:
+            name = self.nameEntry.entryVar.get()
+            email = self.emailEntry.entryVar.get()
+            password = self.passwordEntry.entryVar.get()
+
+            success, message = db.create_newuser(name, email, password)
+            if success:
+                msgbox.showinfo("Success", message=message)
+                self.register.destroy()
+                from SignInNew import SignInPage
+                loginPage = SignInPage(tk.Tk())
+            else:
+                msgbox.showerror("Error", message=message)
+        
+    
+    def GoBack(self):
+        self.register.destroy()
+        from SignInNew import SignInPage
+        loginPage = SignInPage(tk.Tk())
 
 if __name__ == "__main__":
     register = tk.Tk()

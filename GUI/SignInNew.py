@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from tkinter import messagebox as msgbox
 from PIL import Image
 from Widgets import *
 from Validation import Validator
@@ -42,8 +43,8 @@ class SignInPage:
         self.passwordEntry = CustomEntry(self.loginFrame.get(), "password", 225, "#EEEEEE", "#000000", "#601E88", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
         self.passwordEntryError = CustomLabel(self.loginFrame.get(), "password","", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.loginButton = CustomButton(self.loginFrame.get(), 225, "Login", "#601E88", "#E44982", "#ffffff", "buttonFont", "w", pady=(19, 0), padx=(25, 0))
-        self.RegisterButton = CustomButton(self.loginFrame.get(), 225, "Create New Account", "#EEEEEE", "#c0c0c0", "#601E88", "buttonFont", "w", pady=(20, 0), padx=(25, 0))
+        self.loginButton = CustomButton(self.loginFrame.get(), 225, "Login", "#601E88", "#E44982", "#ffffff", "buttonFont", "w", self.LoginAction, pady=(19, 0), padx=(25, 0))
+        self.RegisterButton = CustomButton(self.loginFrame.get(), 225, "Create New Account", "#EEEEEE", "#c0c0c0", "#601E88", "buttonFont", "w", self.SignUp, pady=(20, 0), padx=(25, 0))
 
     def bindValidationEvents(self):
         self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("email"))
@@ -55,6 +56,24 @@ class SignInPage:
 
         validator = Validator(fieldName, entry, errorLabel)
         validator.validate()
+
+    def LoginAction(self):
+        email = self.emailEntry.entryField["email"].get()
+        password = self.passwordEntry.entryField["password"].get()
+        success, message = db.verify_student_login(email, password)
+        if success:
+            msgbox.showinfo(title="Success", message=message)
+            self.login.destroy()
+            from StudentMainPage import MainPage
+            Enrollment_Page = MainPage(tk.Tk())
+            # Enrollment_Page.mainloop()
+        else:
+            msgbox.showerror(title="Error", message=message)
+
+    def SignUp(self):
+        self.login.destroy()
+        from SignUpNew import SignUpPage
+        SignUp_Page = SignUpPage(tk.Tk())
 
 if __name__ == "__main__":
     login = tk.Tk()

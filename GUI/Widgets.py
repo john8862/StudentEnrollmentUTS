@@ -83,7 +83,7 @@ class CustomLabel:
         return self.label
         
 class CustomButton:
-    def __init__(self, master, width, text, fg_color, hover_color, text_color, font_type, anchor, pady=(0, 0), padx=(0, 0), **kwargs):
+    def __init__(self, master, width, text, fg_color, hover_color, text_color, font_type, anchor, command=None, pady=(0, 0), padx=(0, 0), **kwargs):
         self.master = master
         self.width = width
         self.text = text
@@ -91,7 +91,9 @@ class CustomButton:
         self.hoverColor = hover_color
         self.fontType = font_type
         self.textColor = text_color
+        self.command = command
         self.anchor = anchor
+        self.command = command
         self.pady = pady
         self.padx = padx
         self.kwargs = kwargs
@@ -105,7 +107,8 @@ class CustomButton:
             width = self.width,
             fg_color = self.fgColor,
             hover_color = self.hoverColor,
-            text_color = self.textColor
+            text_color = self.textColor,
+            command = self.command
         )
         SetCursor(self.button)
 
