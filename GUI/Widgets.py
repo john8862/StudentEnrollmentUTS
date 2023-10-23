@@ -11,7 +11,7 @@ class CustomFont:
     buttonFont = ("Arial Bold", 12, "normal")
     descriptionFont = ("Arial Bold", 9, "normal")
     linkFont = ("Arial Bold", 9, "normal", "underline")
-    errorFont = ("Arial Bold", 9, "italic")
+    errorFont = ("Arial Bold", 11, "italic")
 
     def __init__(self, font_type):
         self.font = getattr(CustomFont, font_type, None)
@@ -21,8 +21,9 @@ class CustomFont:
         return getattr(cls, font_type, None)
 
 class CustomEntry:
-    def __init__(self, master, width, fg_color, text_color, border_color, font_type, bd, anchor, pady=(0, 0), padx=(0, 0), show=None, **kwargs):
+    def __init__(self, master, fieldName, width, fg_color, text_color, border_color, font_type, bd, anchor, pady=(0, 0), padx=(0, 0), show=None, **kwargs):
         self.master = master
+        self.fieldName = fieldName
         self.width = width
         self.fgColor = fg_color
         self.textColor = text_color
@@ -34,10 +35,12 @@ class CustomEntry:
         self.padx = padx
         self.show = show
         self.kwargs = kwargs
+        self.entryField = {}    # Create a dictionary to store the entry field
         self.create()
 
     def create(self):
-        self.entry = ctk.CTkEntry(self.master, width=self.width, show=self.show)
+        self.entryVar = ctk.StringVar()
+        self.entry = ctk.CTkEntry(self.master, width=self.width, show=self.show, textvariable=self.entryVar)
         self.entry.pack(anchor=self.anchor, pady=self.pady, padx=self.padx)
         self.entry.configure(
             font = CustomFont.get(self.fontType),
@@ -46,13 +49,15 @@ class CustomEntry:
             border_color = self.borderColor,
             border_width = self.borderWidth,
         )
+        self.entryField[self.fieldName] = self.entry
 
     def get(self):
         return self.entry
 
 class CustomLabel:
-    def __init__(self, master, text, text_color, font_type, anchorc, anchorp, pady=(0, 0), padx=(0, 0), **kwargs):
+    def __init__(self, master, labelName, text, text_color, font_type, anchorc, anchorp, pady=(0, 0), padx=(0, 0), **kwargs):
         self.master = master
+        self.labelName = labelName
         self.text = text
         self.textColor = text_color
         self.fontType = font_type
@@ -61,16 +66,18 @@ class CustomLabel:
         self.pady = pady
         self.padx = padx
         self.kwargs = kwargs
+        self.LabelField = {}
         self.create()
 
     def create(self):
-        self.label = ctk.CTkLabel(self.master, text=self.text, **self.kwargs)    
+        self.label = ctk.CTkLabel(self.master, text=self.text, **self.kwargs)
+        self.label.pack(anchor=self.anchorp, pady=self.pady, padx=self.padx)    
         self.label.configure(
             font = CustomFont.get(self.fontType),
             text_color = self.textColor,
             anchor = self.anchorc
         )
-        self.label.pack(anchor=self.anchorp, pady=self.pady, padx=self.padx)
+        self.LabelField[self.labelName] = self.label
 
     def get(self):
         return self.label
