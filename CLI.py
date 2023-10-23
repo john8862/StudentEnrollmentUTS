@@ -8,6 +8,7 @@ from class_admin import Admin
 
 def main():
     
+    
     try:
         with open("students.data", "r") as file:
             data = json.load(file)
@@ -25,6 +26,18 @@ def main():
         with open("students.data", "w") as file:
             json.dump({}, file)
 
+
+
+    try:
+        with open("admins.data", "r") as file:
+            data = json.load(file)
+            for admin_data in data:
+                admin = Admin(**admin_data, from_file=True)
+                Admin.admins.append(admin)
+
+    except FileNotFoundError:
+        with open("admins.data", "w") as file:
+            json.dump([], file)
 
 
     try:
