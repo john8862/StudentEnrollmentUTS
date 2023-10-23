@@ -134,7 +134,7 @@ class Student:
             print(Fore.YELLOW + "\t\tPassword successfully changed!" + Style.RESET_ALL)
             self.save_students_file()  # Save the updated password
         else:
-            print(Fore.RED + "Incorrect password format." + Style.RESET_ALL)
+            print(Fore.RED + "\t\tIncorrect password format." + Style.RESET_ALL)
 
 
     def __str__(self):

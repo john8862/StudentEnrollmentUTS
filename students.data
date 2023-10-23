@@ -6,8 +6,8 @@
         "subject": [
             "Software::506 -- Mark = 92.31 -- Grade = HD",
             "Sensor::791 -- Mark = 85.22 -- Grade = HD",
-            "math::676 -- Mark = 48.19 -- Grade = Z",
-            "Robotics::230 -- Mark = 74.1 -- Grade = C"
+            "Robotics::230 -- Mark = 74.1 -- Grade = C",
+            "math::357 -- Mark = 45.97 -- Grade = Z"
         ],
         "student_id": "000001"
     },

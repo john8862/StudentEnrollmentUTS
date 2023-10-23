@@ -103,7 +103,7 @@ class Admin:
     def clear_all_students():
         global students
         print(Fore.YELLOW + "\tClearing students database" + Style.RESET_ALL)
-        confirmation = input(Fore.RED + "\tAre you sure you want to clear the database (Y)es/(N)O: " + Style.RESET_ALL).strip().upper()
+        confirmation = input(Fore.RED + "\tAre you sure you want to clear the database (Y)ES/(N)O: " + Style.RESET_ALL).strip().upper()
         if confirmation == 'Y':
             students = []
             # Save the empty list to the file

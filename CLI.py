@@ -39,12 +39,12 @@ def main():
             json.dump([], file)
 
     while True:
-        choice = input(Fore.BLUE + "University System: (A)dmin, (S)tudent, or X :" + Style.RESET_ALL).upper()
+        choice = input(Fore.CYAN + "University System: (A)dmin, (S)tudent, or X :" + Style.RESET_ALL).upper()
 
 
         if choice == "S":
             while True:
-                student_choice = input(Fore.BLUE + "\tStudent System(l/r/x):" + Style.RESET_ALL).lower()
+                student_choice = input(Fore.CYAN + "\tStudent System(l/r/x):" + Style.RESET_ALL).lower()
                 if student_choice == "l":
                     while True:
                         print(Fore.GREEN + "\tStudent Sign In" + Style.RESET_ALL)
@@ -78,13 +78,13 @@ def main():
                         student_menu_choice = input(Fore.BLUE + "\t\tStudent Course Menu (c/e/r/s/x):" + Style.RESET_ALL).lower()
                         if student_menu_choice == "c":
                             while True:
-                                new_password = input("\t\t\tNew password: ")
-                                confirm_password = input("\t\t\tConfirm password: ")
+                                new_password = input("\t\tNew password: ")
+                                confirm_password = input("\t\tConfirm password: ")
                                 if new_password == confirm_password:
                                     student.change_password(new_password)
                                     break
                                 else:
-                                    print(Fore.RED + "\t\t\tThe password is not the same twice" + Style.RESET_ALL)
+                                    print(Fore.RED + "\t\tThe password is not the same twice" + Style.RESET_ALL)
                         elif student_menu_choice == "e":
                             while True:
                                 subject = input("\t\tEnter the subject you want to enrol in: ")
