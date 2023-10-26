@@ -1,32 +1,35 @@
 import re
 import customtkinter as ctk
+
 from Widgets import CustomFont
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 class Validator:
     
-    def __init__(self, fieldName, entry, errorLabel, passwordEntry=None):
-        
+    def __init__(self, fieldName, entry, errorLabel, passwordValue: str=None):
         self.fieldName = fieldName
         self.entry = entry
         self.errorLabel = errorLabel
-        self.passwordEntry = passwordEntry
+        self.passwordValue = passwordValue
         self.validationRuleDict = {
-            "name": {
+            "Name": {
             "required": True,
             "validationFunction": None
             },
-            "email": {
+            "Email": {
                 "required": True,
                 "validationFunction": self.email
             },
-            "password": {
+            "Password": {
                 "required": True,
                 "validationFunction": self.password
             },
-            # "confirmPassword": {
-            #     "required": True,
-            #     "validationFunction": self.confirmPassword
-            # }
+            "ConfirmPassword": {
+                "required": True,
+                "validationFunction": self.confirmPassword
+            }
         }
 
     def validate(self):
@@ -46,8 +49,8 @@ class Validator:
             self.errorLabel.get().configure(text="")
 
         if rules["validationFunction"]:
-            # if self.fieldName == "confirmPassword":
-            #     rules["validationFunction"] = lambda: self.confirmPassword(self.passwordEntry.get())
+            if self.fieldName == "ConfirmPassword":
+                return rules["validationFunction"](self.passwordValue)
             return rules["validationFunction"]()
 
         return True
@@ -86,19 +89,20 @@ class Validator:
             self.errorLabel.get().configure(text="")
             return True
 
-    # def confirmPassword(self, passwordEntry):
-    #     confirmPassword = self.entry.get()
-    #     password = self.passwordEntry.get() if self.passwordEntry else None
+    def confirmPassword(self, passwordValue):
+        confirmPassword = self.entry.get().get()
+        errorLabel = self.errorLabel.get()
+        logging.info("ConfirmPassword: %s", confirmPassword)
 
-    #     if password != confirmPassword:
-    #         self.entry.get().configure(bg_color="#FF0000", text_color="#000000")
-    #         self.errorLabel.get().configure(
-    #             text="* Passwords do not match!",
-    #             font=CustomFont.errorFont,
-    #             text_color="#FF0000"
-    #         )
-    #         return False
-    #     else:
-    #         self.entry.get().configure(bg_color="#FFFFFF", text_color="#000000")
-    #         self.errorLabel.get().configure(text="")
-    #         return True
+        if confirmPassword != passwordValue:
+            self.entry.get().configure(bg_color="#FF0000", text_color="#000000")
+            self.errorLabel.get().configure(
+                text="* Passwords do not match!",
+                font=CustomFont.errorFont,
+                text_color="#FF0000"
+            )
+            return False
+        else:
+            self.entry.get().configure(bg_color="#FFFFFF", text_color="#000000")
+            self.errorLabel.get().configure(text="")
+            return True

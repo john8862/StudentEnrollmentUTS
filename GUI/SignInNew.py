@@ -5,6 +5,7 @@ from PIL import Image
 from Widgets import *
 from Validation import Validator
 from db import db
+import os
 
 class SignInPage:
     def __init__(self, master):
@@ -32,40 +33,41 @@ class SignInPage:
         self.sideImage = CustomImage(self.login, "GUI/Image/purple/side-img.png", "GUI/Image/purple/side-img.png", (300, 480), "", expand=True, side="left")
         self.loginFrame = CustomFrame(self.login, 300, 480, "#ffffff", False, expand=True, side="right")
 
-        self.heading = CustomLabel(self.loginFrame.get(), "heading","Welcome Back!", "#601E88", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
-        self.subHeading = CustomLabel(self.loginFrame.get(), "subheading","Sign in to your account", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
+        self.heading = CustomLabel(self.loginFrame.get(), "Heading","Welcome Back!", "#601E88", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
+        self.subHeading = CustomLabel(self.loginFrame.get(), "Subheading","Sign in to your account", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
 
-        self.emailLabel = CustomLabel(self.loginFrame.get(), "email", "Email:", "#601E88", "labelFont", "w", "w", pady=(38, 0), padx=(25, 0), justify="left", image=self.emailIcon, compound="left")
-        self.emailEntry = CustomEntry(self.loginFrame.get(), "email", 225, "#EEEEEE", "#000000", "#601E88", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
-        self.emailEntryError = CustomLabel(self.loginFrame.get(), "email","", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.emailLabel = CustomLabel(self.loginFrame.get(), "Email", "Email:", "#601E88", "labelFont", "w", "w", pady=(38, 0), padx=(25, 0), justify="left", image=self.emailIcon, compound="left")
+        self.emailEntry = CustomEntry(self.loginFrame.get(), "Email", 225, "#EEEEEE", "#000000", "#601E88", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
+        self.emailEntryError = CustomLabel(self.loginFrame.get(), "Email","", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.passwordLabel = CustomLabel(self.loginFrame.get(), "password", "Password:", "#601E88", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
-        self.passwordEntry = CustomEntry(self.loginFrame.get(), "password", 225, "#EEEEEE", "#000000", "#601E88", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
-        self.passwordEntryError = CustomLabel(self.loginFrame.get(), "password","", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.passwordLabel = CustomLabel(self.loginFrame.get(), "Password", "Password:", "#601E88", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
+        self.passwordEntry = CustomEntry(self.loginFrame.get(), "Password", 225, "#EEEEEE", "#000000", "#601E88", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
+        self.passwordEntryError = CustomLabel(self.loginFrame.get(), "Password","", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
         self.loginButton = CustomButton(self.loginFrame.get(), 225, "Login", "#601E88", "#E44982", "#ffffff", "buttonFont", "w", self.LoginAction, pady=(19, 0), padx=(25, 0))
         self.RegisterButton = CustomButton(self.loginFrame.get(), 225, "Create New Account", "#EEEEEE", "#c0c0c0", "#601E88", "buttonFont", "w", self.SignUp, pady=(20, 0), padx=(25, 0))
 
     def bindValidationEvents(self):
-        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("email"))
-        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("password"))
+        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Email"))
+        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Password"))
 
     def entryLeave(self, fieldName):
-        entry = getattr(self, f"{fieldName}Entry")
-        errorLabel = getattr(self, f"{fieldName}EntryError")
+        entry = getattr(self, f"{fieldName.lower()}Entry")
+        errorLabel = getattr(self, f"{fieldName.lower()}EntryError")
 
         validator = Validator(fieldName, entry, errorLabel)
         validator.validate()
 
     def LoginAction(self):
-        email = self.emailEntry.entryField["email"].get()
-        password = self.passwordEntry.entryField["password"].get()
+        email = self.emailEntry.entryField["Email"].get()
+        password = self.passwordEntry.entryField["Password"].get()
         success, message = db.verify_student_login(email, password)
         if success:
             msgbox.showinfo(title="Success", message=message)
+            name, email, studentId, subjects = db.get_user_credentials(email)
             self.login.destroy()
             from StudentMainPage import MainPage
-            Enrollment_Page = MainPage(tk.Tk())
+            Enrollment_Page = MainPage(tk.Tk(), name, studentId, email, subjects)
             # Enrollment_Page.mainloop()
         else:
             msgbox.showerror(title="Error", message=message)

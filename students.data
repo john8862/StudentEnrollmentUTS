@@ -2,8 +2,35 @@
     {
         "Name": "Sherlock Zhao",
         "Email": "sherlock.zhao@university.com",
-        "Password": "Admin456",
-        "Student_id": "000001",
-        "Subjects": []
+        "Password": "Admin123",
+        "Subjects": [
+            {
+                "Subject": "Math",
+                "ID": 123,
+                "Mark": 85.96,
+                "Grade": "HD"
+            },
+            {
+                "Subject": "Database",
+                "ID": 456,
+                "Mark": 78.92,
+                "Grade": "C"
+            }
+        ],
+        "Student_ID": "000001"
+    },
+    {
+        "Name": "Test Test",
+        "Email": "test.test@university.com",
+        "Password": "Admin123",
+        "Subjects": [],
+        "Student_ID": "045360"
+    },
+    {
+        "Name": "Test Test2",
+        "Email": "Test2.test@university.com",
+        "Password": "Admin123",
+        "Subjects": [],
+        "Student_ID": "222763"
     }
 ]

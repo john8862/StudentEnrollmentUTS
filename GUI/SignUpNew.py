@@ -9,11 +9,11 @@ from db import db
 class SignUpPage:
     def __init__(self, master):
         self.register = master
-        self.initialize_window()
-        self.create_widgets()
+        self.initializeWindow()
+        self.createWidgets()
         self.bindValidationEvents()
 
-    def initialize_window(self):
+    def initializeWindow(self):
         x = int(self.register.winfo_screenwidth() / 3 - self.register.winfo_reqwidth() / 3)
         y = int(self.register.winfo_screenheight() / 3 - self.register.winfo_reqheight() / 3)
 
@@ -30,66 +30,51 @@ class SignUpPage:
         self.emailIcon = ctk.CTkImage(dark_image=emailIconFile, light_image=emailIconFile, size=(20,20))
         self.passwordIcon = ctk.CTkImage(dark_image=passwordIconFile, light_image=passwordIconFile, size=(17,17))
 
-    def create_widgets(self):
+    def createWidgets(self):
         self.sideImage = CustomImage(self.register, "GUI/Image/orange/side-img.png", "GUI/Image/orange/side-img.png", (300, 600), "", expand=True, side="left")
         # self.registerFrame = CustomFrame(self.register, 300, 480, "#ffffff", False, expand=True, side="right")
         self.registerFrame = CustomFrame(self.register, 300, 600, "#ffffff", False, expand=True, side="right")
 
-        self.heading = CustomLabel(self.registerFrame.get(), "heading", "Create New Account", "#FF6633", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
+        self.heading = CustomLabel(self.registerFrame.get(), "Heading", "Create New Account", "#FF6633", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
         self.subHeading = CustomLabel(self.registerFrame.get(), "Subheading", "Sign up a new student account", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
 
-        self.nameLabel = CustomLabel(self.registerFrame.get(), "name", "Name:", "#FF6633", "labelFont", "w", "w", pady=(18, 0), padx=(25, 0), justify="left", image=self.nameIcon, compound="left")
-        self.nameEntry = CustomEntry(self.registerFrame.get(), "name", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
-        self.nameEntryError = CustomLabel(self.registerFrame.get(), "name", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.nameLabel = CustomLabel(self.registerFrame.get(), "Name", "Name:", "#FF6633", "labelFont", "w", "w", pady=(18, 0), padx=(25, 0), justify="left", image=self.nameIcon, compound="left")
+        self.nameEntry = CustomEntry(self.registerFrame.get(), "Name", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
+        self.nameEntryError = CustomLabel(self.registerFrame.get(), "Name", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.emailLabel = CustomLabel(self.registerFrame.get(), "email", "Email:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.emailIcon, compound="left")
-        self.emailEntry = CustomEntry(self.registerFrame.get(), "email", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
-        self.emailEntryError = CustomLabel(self.registerFrame.get(), "email", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.emailLabel = CustomLabel(self.registerFrame.get(), "Email", "Email:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.emailIcon, compound="left")
+        self.emailEntry = CustomEntry(self.registerFrame.get(), "Email", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
+        self.emailEntryError = CustomLabel(self.registerFrame.get(), "Email", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.passwordLabel = CustomLabel(self.registerFrame.get(), "password", "Password:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
-        self.passwordEntry = CustomEntry(self.registerFrame.get(), "password", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
-        self.passwordEntryError = CustomLabel(self.registerFrame.get(), "password", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.passwordLabel = CustomLabel(self.registerFrame.get(), "Password", "Password:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
+        self.passwordEntry = CustomEntry(self.registerFrame.get(), "Password", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
+        self.passwordEntryError = CustomLabel(self.registerFrame.get(), "Password", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.confirmPasswordLabel = CustomLabel(self.registerFrame.get(), "confirmPassword", "Confirm Password:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
-        self.confirmPasswordEntry = CustomEntry(self.registerFrame.get(), "confirmPassword", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
-        self.confirmPasswordEntryError = CustomLabel(self.registerFrame.get(), "confirmPassword", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.confirmpasswordLabel = CustomLabel(self.registerFrame.get(), "ConfirmPassword", "Confirm Password:", "#FF6633", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
+        self.confirmpasswordEntry = CustomEntry(self.registerFrame.get(), "ConfirmPassword", 225, "#EEEEEE", "#000000", "#FF6633", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
+        self.confirmpasswordEntryError = CustomLabel(self.registerFrame.get(), "ConfirmPassword", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
         self.registerButton = CustomButton(self.registerFrame.get(), 225, "Sign Up", "#FF6633", "#E44982", "#ffffff", "buttonFont", "w", self.SignUpAction, pady=(15, 0), padx=(25, 0))
-        self.goBackButton = CustomButton(self.registerFrame.get(), 225, "Go Back", "#EEEEEE", "#c0c0c0", "#601E88", "buttonFont", "w", self.GoBack, pady=(15, 0), padx=(25, 0))
+        self.goBackButton = CustomButton(self.registerFrame.get(), 225, "Go Back", "#EEEEEE", "#c0c0c0", "#FF0000", "buttonFont", "w", self.GoBack, pady=(15, 0), padx=(25, 0))
 
     def bindValidationEvents(self):
-        self.nameEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("name"))
-        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("email"))
-        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("password"))
-        self.confirmPasswordEntry.get().bind("<FocusOut>", lambda event: self.confirmPassword(event))
+        self.nameEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Name"))
+        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Email"))
+        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Password"))
+        self.confirmpasswordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("ConfirmPassword"))
 
     def entryLeave(self, fieldName):
-        entry = getattr(self, f"{fieldName}Entry")
-        errorLabel = getattr(self, f"{fieldName}EntryError")
+        entry = getattr(self, f"{fieldName.lower()}Entry")
+        errorLabel = getattr(self, f"{fieldName.lower()}EntryError")
 
-        validator = Validator(fieldName, entry, errorLabel, passwordEntry=self.passwordEntry)
+        validator = Validator(fieldName, entry, errorLabel, passwordValue=self.passwordEntry.get().get())
         validator.validate()
 
-    def confirmPassword(self, event):
-        confirmPassword = self.confirmPasswordEntry.entryField["confirmPassword"].get()
-        password = self.passwordEntry.entryField["password"].get()
-
-        if password != confirmPassword:
-            self.confirmPasswordEntry.get().configure(bg_color="#FF0000", text_color="#000000")
-            self.confirmPasswordEntryError.get().configure(
-                text="* Passwords do not match!",
-                font=CustomFont.errorFont,
-                text_color="#FF0000"
-            )
-        else:
-            self.confirmPasswordEntry.get().configure(bg_color="#FFFFFF", text_color="#000000")
-            self.confirmPasswordEntryError.get().configure(text="")
-
     def SignUpAction(self):
-        nameError = self.nameEntryError.LabelField["name"].cget("text")
-        emailError = self.emailEntryError.LabelField["email"].cget("text")
-        passwordError = self.passwordEntryError.LabelField["password"].cget("text")
-        confirmPasswordError = self.confirmPasswordEntryError.LabelField["confirmPassword"].cget("text")
+        nameError = self.nameEntryError.LabelField["Name"].cget("text")
+        emailError = self.emailEntryError.LabelField["Email"].cget("text")
+        passwordError = self.passwordEntryError.LabelField["Password"].cget("text")
+        confirmPasswordError = self.confirmPasswordEntryError.LabelField["ConfirmPassword"].cget("text")
 
         if nameError:
             msgbox.showerror("Error", "Name is required!")

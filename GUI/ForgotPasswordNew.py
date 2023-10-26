@@ -1,19 +1,20 @@
 import tkinter as tk
 import customtkinter as ctk
+from tkinter import messagebox as msgbox
 from PIL import Image
 from Validation import Validator
 from Widgets import *
 from db import db
 
-class ChangePassword:
+class ChangePasswordPage:
 
     def __init__(self, master):
         self.forgotPassword = master
-        self.initialize_window()
-        self.create_widgets()
-        self.bindValidationEvents()
+        self.initializeWindow()
+        self.createWidgets()
+        self.bindEvents()
 
-    def initialize_window(self):
+    def initializeWindow(self):
         x = int(self.forgotPassword.winfo_screenwidth() / 3 - self.forgotPassword.winfo_reqwidth() / 3)
         y = int(self.forgotPassword.winfo_screenheight() / 3 - self.forgotPassword.winfo_reqheight() / 3)
 
@@ -29,55 +30,62 @@ class ChangePassword:
         self.emailIcon = ctk.CTkImage(dark_image=emailIconFile, light_image=emailIconFile, size=(20,20))
         self.passwordIcon = ctk.CTkImage(dark_image=passwordIconFile, light_image=passwordIconFile, size=(17,17))
 
-    def create_widgets(self):
+    def createWidgets(self):
         self.sideImage = CustomImage(self.forgotPassword, "GUI/Image/lightpurple/side-img.png", "GUI/Image/lightpurple/side-img.png", (300, 520), "", expand=True, side="left")
         self.forgotPasswordFrame = CustomFrame(self.forgotPassword, 300, 520, "#ffffff", False, expand=True, side="right")
 
-        self.heading = CustomLabel(self.forgotPasswordFrame.get(), "heading","Change Password", "#9900FF", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
-        self.subHeading = CustomLabel(self.forgotPasswordFrame.get(), "subheading", "Choose your new password", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
+        self.heading = CustomLabel(self.forgotPasswordFrame.get(), "Heading","Change Password", "#9900FF", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
+        self.subHeading = CustomLabel(self.forgotPasswordFrame.get(), "Subheading", "Choose your new password", "#7E7E7E", "subHeadingFont", "w", "w", padx=(25, 0), justify="left")
 
         self.emailLabel = CustomLabel(self.forgotPasswordFrame.get(), "email", "Email:", "#9900FF", "labelFont", "w", "w", pady=(38, 0), padx=(25, 0), justify="left", image=self.emailIcon, compound="left")
         self.emailEntry = CustomEntry(self.forgotPasswordFrame.get(), "email", 225, "#EEEEEE", "#000000", "#9900FF", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show=None)
         self.emailEntryError = CustomLabel(self.forgotPasswordFrame.get(), "email", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.passwordLabel = CustomLabel(self.forgotPasswordFrame.get(), "password", "Password:", "#9900FF", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
-        self.passwordEntry = CustomEntry(self.forgotPasswordFrame.get(), "password", 225, "#EEEEEE", "#000000", "#9900FF", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
-        self.passwordEntryError = CustomLabel(self.forgotPasswordFrame.get(), "password", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.passwordLabel = CustomLabel(self.forgotPasswordFrame.get(), "Password", "New Password:", "#9900FF", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
+        self.passwordEntry = CustomEntry(self.forgotPasswordFrame.get(), "Password", 225, "#EEEEEE", "#000000", "#9900FF", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
+        self.passwordEntryError = CustomLabel(self.forgotPasswordFrame.get(), "Password", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.confirmPasswordEntryLabel = CustomLabel(self.forgotPasswordFrame.get(), "confirmPassword", "Confirm Password:", "#9900FF", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
-        self.confirmPasswordEntry = CustomEntry(self.forgotPasswordFrame.get(), "confirmPassword", 225, "#EEEEEE", "#000000", "#9900FF", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
-        self.confirmPasswordEntryError = CustomLabel(self.forgotPasswordFrame.get(), "confirmPassword", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
+        self.confirmpasswordEntryLabel = CustomLabel(self.forgotPasswordFrame.get(), "ConfirmPasword", "Confirm Password:", "#9900FF", "labelFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left", image=self.passwordIcon, compound="left")
+        self.confirmpasswordEntry = CustomEntry(self.forgotPasswordFrame.get(), "ConfirmPasword", 225, "#EEEEEE", "#000000", "#9900FF", "entryFont", 1, "w", pady=(0, 0), padx=(25, 0), show="*")
+        self.confirmpasswordEntryError = CustomLabel(self.forgotPasswordFrame.get(), "ConfirmPasword", "", "#FF0000", "errorFont", "w", "w", pady=(0, 0), padx=(25, 0), justify="left")
 
-        self.changePasswordButton = CustomButton(self.forgotPasswordFrame.get(), 225, "Submit", "#9900FF", "#E44982", "#ffffff", "buttonFont", "w", pady=(19, 0), padx=(25, 0))
+        self.changePasswordButton = CustomButton(self.forgotPasswordFrame.get(), 225, "Submit", "#9900FF", "#E44982", "#ffffff", "buttonFont", "w", command=self.submitPassword, pady=(19, 0), padx=(25, 0))
 
-    def bindValidationEvents(self):
-        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("email"))
-        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("password"))
-        self.confirmPasswordEntry.get().bind("<FocusOut>", lambda event: self.confirmPassword(event))
+    def bindEvents(self):
+        self.emailEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Email"))
+        self.passwordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("Password"))
+        self.confirmpasswordEntry.get().bind("<FocusOut>", lambda event: self.entryLeave("ConfirmPassword"))
 
     def entryLeave(self, fieldName):
-        entry = getattr(self, f"{fieldName}Entry")
-        errorLabel = getattr(self, f"{fieldName}EntryError")
+        entry = getattr(self, f"{fieldName.lower()}Entry")
+        errorLabel = getattr(self, f"{fieldName.lower()}EntryError")
 
-        validator = Validator(fieldName, entry, errorLabel, passwordEntry=self.passwordEntry)
+        validator = Validator(fieldName, entry, errorLabel, passwordValue=self.passwordEntry.get().get())
         validator.validate()
 
-    def confirmPassword(self, event):
-        confirmPassword = self.confirmPasswordEntry.entryField["confirmPassword"].get()
-        password = self.passwordEntry.entryField["password"].get()
+    def submitPassword(self):
+        emailError = self.emailEntryError.get().cget("text")
+        passwordError = self.passwordEntryError.get().cget("text")
+        confirmPasswordError = self.confirmPasswordEntryError.get().cget("text")
 
-        if password != confirmPassword:
-            self.confirmPasswordEntry.get().configure(bg_color="#FF0000", text_color="#000000")
-            self.confirmPasswordEntryError.get().configure(
-                text="* Passwords do not match!",
-                font=CustomFont.errorFont,
-                text_color="#FF0000"
-            )
+        if emailError:
+            msgbox.showerror("Error", message="Please enter a valid email address!")
+        elif passwordError:
+            msgbox.showerror("Error", message="Please enter a valid password!")
+        elif confirmPasswordError:
+            msgbox.showerror("Error", message="Passwords do not match!")
         else:
-            self.confirmPasswordEntry.get().configure(bg_color="#FFFFFF", text_color="#000000")
-            self.confirmPasswordEntryError.get().configure(text="")
+            email = self.emailEntry.entryVar.get()
+            password = self.passwordEntry.entryVar.get()
+
+            success, message = db.change_password(email, password)
+            if success:
+                msgbox.showinfo("Success", message=message)
+                self.forgotPassword.destroy()
+            else:
+                msgbox.showerror("Error", message=message)
 
 if __name__ == "__main__":
     forgotPassword = tk.Tk()
-    forgotPasswordPage = ChangePassword(forgotPassword)
+    forgotPasswordPage = ChangePasswordPage(forgotPassword)
     forgotPassword.mainloop()
