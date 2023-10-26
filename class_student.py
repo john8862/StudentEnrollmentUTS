@@ -9,7 +9,6 @@ class Student:
         self.email = email
         self.password = password
         self.subject = subject
-        #self.subject = []
         if not from_file:
             self.generate_student_id()
             self.save_students_file()
@@ -18,27 +17,14 @@ class Student:
         global students
 
         # If there are no students, start with ID '000001'
-        if not students:
-            self.student_id = '000001'
-            students.append(self)
-            return
+        generated_id = str(random.randint(0, 999999)).zfill(6)
 
-        # Extract all existing student IDs and sort them
-        existing_ids = sorted([int(student.student_id) for student in students])
 
-        # Find the first missing ID
-        missing_id = None
-        for i in range(1, existing_ids[-1] + 1):
-            if i not in existing_ids:
-                missing_id = i
-                break
+        existing_ids = [student.student_id for student in students]
+        while generated_id in existing_ids:
+            generated_id = str(random.randint(0, 999999)).zfill(6)
 
-        # If a missing ID is found, use it. Otherwise, use the next number after the highest existing ID.
-        if missing_id:
-            self.student_id = str(missing_id).zfill(6)
-        else:
-            self.student_id = str(existing_ids[-1] + 1).zfill(6)
-
+        self.student_id = generated_id
         students.append(self)
     @staticmethod
     def is_valid_email(email):
@@ -76,7 +62,7 @@ class Student:
         else:
             random_number = str(random.randint(0, 999)).zfill(3)
             # 检查生成的数字是否重复
-            while any(subject.endswith(f"_{random_number}") for subject in self.subject):
+            while any(s['ID'] == int(random_number) for s in self.subject):
                 random_number = str(random.randint(0, 999)).zfill(3)
             # 将随机数字添加到subject中
             subject_with_number = f"{subject}-{random_number}"
@@ -94,17 +80,22 @@ class Student:
                 grade = "HD"
 
             subject_with_grade = f"{subject}::{random_number} -- Mark = {mark} -- Grade = {grade}"
-
-            self.subject.append(subject_with_grade)
+            subject_dict = {
+                "Subject": subject,
+                "ID": int(random_number),
+                "Mark": mark,
+                "Grade": grade
+            }
+            self.subject.append(subject_dict)
             print(Fore.YELLOW + f"\t\tEnrolling in {subject_with_number}." + Style.RESET_ALL)
+            print(Fore.YELLOW + f"\t\tYou are now enrolled in {len(self.subject)} out of 4 subjects." + Style.RESET_ALL)
             
             self.save_students_file()
 
     def remove_subject(self, subject_id):
         for subject in self.subject:
-            if f"::{subject_id}" in subject:
-                subject_name, subject_number = subject.split('::', 1)[0], subject.split('::', 1)[1].split(' ', 1)[0]
-                print(Fore.YELLOW + f"\t\tDroping {subject_name}-{subject_number}." + Style.RESET_ALL)
+            if subject['ID'] == int(subject_id):
+                print(Fore.YELLOW + f"\t\tDropping {subject['Subject']}-{subject['ID']}." + Style.RESET_ALL)
                 self.subject.remove(subject)
                 print(Fore.YELLOW + f"\t\tYou are now enrolled in {len(self.subject)} out of 4 subjects." + Style.RESET_ALL)
                 # Assuming there's a method to save to a file
@@ -115,20 +106,40 @@ class Student:
     def show_enrolment(self):
         print(Fore.YELLOW + f"\t\tShowing {len(self.subject)} subjects." + Style.RESET_ALL)
         for subject in self.subject:
-            # 提取Mark和grade
-            # subject_1 = '\t\t\t' + '\t\t\t'.join(str(subject).splitlines(True))
-            print(f"\t\t[ {subject} ]")
+            subj_str = f"{subject['Subject']}::{subject['ID']} -- Mark = {subject['Mark']} -- Grade = {subject['Grade']}"
+            print(f"\t\t[ {subj_str} ]")
 
 
     def save_students_file(self):
-        #__dict__ 能将每个 student 对象转换为字典形式
-        data = [student.__dict__ for student in students]
+        def extract_subject_info(subj_str):
+            if isinstance(subj_str, str):
+                # Original extraction code
+                subj_name, rest = subj_str.split("::", 1)
+                subj_id, rest = rest.split(" -- Mark = ", 1)
+                mark, grade = rest.split(" -- Grade = ", 1)
+                return {
+                    "Subject": subj_name.strip(),
+                    "ID": int(subj_id.strip()),
+                    "Mark": float(mark.strip()),
+                    "Grade": grade.strip()
+                }
+            elif isinstance(subj_str, dict):
+                # If it's already a dictionary, just return it
+                return subj_str
+        data = [{
+            "Name": student.name,
+            "Email": student.email,
+            "Password": student.password,
+            "Subject": [extract_subject_info(subject) for subject in student.subject],
+            "Student_ID": student.student_id,
+            }
+            for student in students
+        ]
+            
         with open("students.data", "w") as file:
-            #将 data 列表（它包含了所有学生的信息）转换为 JSON 格式，并写入到打开的文件中。
-            json.dump(data, file, indent = 4)
-
+            json.dump(data, file, indent=4)
     def change_password(self, new_password):
-        print(Fore.YELLOW + "\t\tUpdating Password." + Style.RESET_ALL)
+        
         if Student.is_valid_password(new_password):
             self.password = new_password
             print(Fore.YELLOW + "\t\tPassword successfully changed!" + Style.RESET_ALL)

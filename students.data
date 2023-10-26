@@ -1,33 +1,60 @@
 [
     {
-        "name": "Yulong Lin",
-        "email": "Yulong.Lin@university.com",
-        "password": "QWASZX123456",
-        "subject": [
-            "Software::506 -- Mark = 92.31 -- Grade = HD",
-            "Sensor::791 -- Mark = 85.22 -- Grade = HD",
-            "Robotics::230 -- Mark = 74.1 -- Grade = C",
-            "math::357 -- Mark = 45.97 -- Grade = Z"
+        "Name": "Yulong Lin",
+        "Email": "Yulong.Lin@university.com",
+        "Password": "QWASZX123456",
+        "Subject": [
+            {
+                "Subject": "math",
+                "ID": 549,
+                "Mark": 59.67,
+                "Grade": "P"
+            },
+            {
+                "Subject": "robotics",
+                "ID": 731,
+                "Mark": 86.75,
+                "Grade": "HD"
+            },
+            {
+                "Subject": "database",
+                "ID": 768,
+                "Mark": 44.05,
+                "Grade": "Z"
+            },
+            {
+                "Subject": "test",
+                "ID": 522,
+                "Mark": 97.4,
+                "Grade": "HD"
+            }
         ],
-        "student_id": "000001"
+        "Student_ID": "090572"
     },
     {
-        "name": "Sherlock Zhao",
-        "email": "Sherlock.Zhao@university.com",
-        "password": "QWASZX123456",
-        "subject": [
-            "database::194 -- Mark = 100 -- Grade = HD",
-            "Economic Evaluate::316 -- Mark = 42 -- Grade = Z"
+        "Name": "Sherlock",
+        "Email": "Sherlock.Zhao@university.com",
+        "Password": "QWASZX123",
+        "Subject": [
+            {
+                "Subject": "math",
+                "ID": 566,
+                "Mark": 93.58,
+                "Grade": "HD"
+            },
+            {
+                "Subject": "Software",
+                "ID": 100,
+                "Mark": 62.67,
+                "Grade": "P"
+            },
+            {
+                "Subject": "test",
+                "ID": 401,
+                "Mark": 29.75,
+                "Grade": "Z"
+            }
         ],
-        "student_id": "000002"
-    },
-    {
-        "name": "Bai Cai",
-        "email": "Bai.Cai@university.com",
-        "password": "QWASZX123456",
-        "subject": [
-            "MATH::116 -- Mark = 38.4 -- Grade = Z"
-        ],
-        "student_id": "000003"
+        "Student_ID": "478937"
     }
 ]

@@ -7,12 +7,6 @@ from class_student import Student, students
 
 class Admin:
     
-    admins = []
-    def __init__(self, username, password, from_file = False):
-        self.username = username
-        self.password = password
-        if not from_file:
-            self.save_admins_file()
 
     def save_admins_file(self):
         data = [admin.__dict__ for admin in Admin.admins]
@@ -27,6 +21,15 @@ class Admin:
             for s in students:
                 print(f"\t{s.name} :: {s.student_id} --> Email: {s.email}")
 
+    @staticmethod            
+    def average_mark(student):
+        if not student.subject:
+            return 0
+        total = 0
+        for subj in student.subject:
+            total += subj['Mark']
+        return round(total / len(student.subject), 2)
+    
     @staticmethod
     def list_students_by_all_grades():
         grade_dict = {
@@ -36,14 +39,28 @@ class Admin:
             'D': [],
             'HD': []
         }
+        if not students:
+            print("\t\t< Nothing to Display >")
+            return grade_dict
+        else:
+            for student in students:
+                avg_mark = Admin.average_mark(student)
 
-        for student in students:
-            for subj in student.subject:
-                grade = subj.split(' -- Grade = ')[1].split(' ')[0]
-                if grade in grade_dict:
-                    grade_dict[grade].append((student, subj))
+                if 0 <= avg_mark < 50:
+                    grade = 'Z'
+                elif 50 <= avg_mark < 65:
+                    grade = 'P'
+                elif 65 <= avg_mark < 75:
+                    grade = 'C'
+                elif 75 <= avg_mark < 85:
+                    grade = 'D'
+                else:
+                    grade = 'HD'
+                
+                grade_dict[grade].append((student, student.subject, avg_mark, grade))
+            return grade_dict
 
-        return grade_dict
+
     @staticmethod
     def partition_students_pass_fail():
         passed_subjects = []
@@ -51,33 +68,43 @@ class Admin:
         no_record_subjects = []
         
         for student in students:
-            for subj in student.subject:
-                mark = float(subj.split(' -- Mark = ')[1].split(' ')[0])
-                grade = subj.split(' -- Grade = ')[1].split(' ')[0]
+            avg_mark = Admin.average_mark(student)
+            if 0 <= avg_mark < 50:
+                grade = 'Z'
+            elif 50 <= avg_mark < 65:
+                grade = 'P'
+            elif 65 <= avg_mark < 75:
+                grade = 'C'
+            elif 75 <= avg_mark < 85:
+                grade = 'D'
+            else:
+                grade = 'HD'
+            
+            if not student.subject:
+                no_record_subjects.append((student, None))
+                continue
 
-                if grade == "Z":  # Assuming Z is a failing grade, adjust as necessary
-                    failed_subjects.append((student, subj))
-                elif mark == 0:   # Assuming 0 mark means no record
-                    no_record_subjects.append((student, subj))
-                else:
-                    passed_subjects.append((student, subj))
+
+            if grade == "Z":  # Assuming Z is a failing grade, adjust as necessary
+                failed_subjects.append((student, student.subject, avg_mark, grade))
+            else:
+                passed_subjects.append((student, student.subject, avg_mark, grade))
 
         return passed_subjects, failed_subjects, no_record_subjects
     
     @staticmethod
-    def print_student_subjects(subject_list, is_no_record = False):
+    def print_student_subjects(subject_list):
         if not subject_list:
             print("[]")
             return
 
         print("[", end="")
-        for idx, (student, subj) in enumerate(subject_list):
-            if is_no_record:
+        for idx, (student, subj, avg_mark, grade) in enumerate(subject_list):
+
+            if not subj:
                 print(f"{student.name} :: {student.student_id}", end="")
             else:
-                grade = subj.split(' -- Grade = ')[1].split(' ')[0]
-                mark = float(subj.split(' -- Mark = ')[1].split(' ')[0])
-                print(f"{student.name} :: {student.student_id} --> GRADE: {grade} - MARK : {mark}", end="")
+                print(f"{student.name} :: {student.student_id} --> GRADE: {grade} - MARK : {avg_mark}", end="")
             if idx != len(subject_list) - 1:
                 print(", ", end="")
         print("]")
@@ -107,8 +134,8 @@ class Admin:
         if confirmation == 'Y':
             students = []
             # Save the empty list to the file
-            if students:
-                students[0].save_students_file()
+            with open("students.data", "w") as file:
+                json.dump([], file)  # directly dump an empty list to the file
             print(Fore.YELLOW + "\tStudents data cleared." + Style.RESET_ALL)
         elif confirmation == 'N':
             print("\tOperation cancelled.")
