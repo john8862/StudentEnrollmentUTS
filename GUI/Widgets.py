@@ -6,9 +6,13 @@ import platform
 class CustomFont:
     entryFont = ("Arial Bold", 14, "normal")
     labelFont = ("Arial Bold", 14, "normal")
+    largeLabelFont = ("Arial Bold", 18, "normal")
     headingFont = ("Arial Bold", 24, "normal")
+    largeHeadingFont = ("Arial Bold", 30, "normal")
     subHeadingFont = ("Arial Bold", 12, "normal")
+    largeSubheadingFont = ("Arial Bold", 14, "normal")
     buttonFont = ("Arial Bold", 12, "normal")
+    largeButtonFont = ("Arial Bold", 14, "normal")
     descriptionFont = ("Arial Bold", 9, "normal")
     linkFont = ("Arial Bold", 9, "normal", "underline")
     errorFont = ("Arial Bold", 11, "italic")
@@ -100,7 +104,7 @@ class CustomButton:
         self.create()
 
     def create(self):
-        self.button = ctk.CTkButton(self.master, text=self.text)
+        self.button = ctk.CTkButton(self.master, text=self.text, **self.kwargs)
         self.button.pack(anchor=self.anchor, pady=self.pady, padx=self.padx)
         self.button.configure(
             font = CustomFont.get(self.fontType),
@@ -108,7 +112,7 @@ class CustomButton:
             fg_color = self.fgColor,
             hover_color = self.hoverColor,
             text_color = self.textColor,
-            command = self.command
+            command = self.command 
         )
         SetCursor(self.button)
 
@@ -134,7 +138,7 @@ class CustomFrame:
         self.frame.configure(
             width=self.width,
             height=self.height,
-            fg_color=self.fgColor
+            fg_color=self.fgColor,
         )
         self.frame.pack(**self.kwargs)
         
