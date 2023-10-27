@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as msgbox
 import customtkinter as ctk
+import time
 # from customtkinter import CTkScrollableFrame as CTkSF
 from CTkTable import CTkTable
 from PIL import Image
@@ -75,29 +76,88 @@ class MainPage:
         self.enrollButton = CustomButton(self.actionFrame.get(), 251, "ENROLL", "#2A8C55", "#207244", "#FFF", "largeButtonFont", "w", self.enrollAction, image=self.enrollImg, padx=10, pady=10)
         self.enrollButton.get().configure(anchor="center")
         self.enrollButton.get().pack(side="left", ipady=5)
-        self.removeButton = CustomButton(self.actionFrame.get(), 251, "REMOVE", "#FF5733", "#900C3F", "#FFF", "largeButtonFont", "e", self.removeAction, image=self.enrollImg, padx=10, pady=10)
+        self.removeButton = CustomButton(self.actionFrame.get(), 251, "DROP", "#FF5733", "#900C3F", "#FFF", "largeButtonFont", "e", self.dropAction, image=self.enrollImg, padx=10, pady=10)
         self.removeButton.get().configure(anchor="center")
         self.removeButton.get().pack(side="right", ipady=5)
 
         self.tableFrame = CustomFrame(self.mainViewFrame.get(), None, None, "transparent", True, anchor="n", fill="both", expand=True, padx=27, pady=21)
         self.table = CTkTable(master=self.tableFrame.get(), values=db.get_user_subjects(self.email), corner_radius=5, colors=["#E6E6E6", "#EEEEEE"], header_color="#2A8C55", hover_color="#B4B4B4")
+        logging.info("table: %s", self.table.get())
         self.table.edit_row(0, text_color="#fff", hover_color="#2A8C55")
-        num_rows = len(self.table.get())
-        for row in range(1, num_rows):  # Starting from 1 to skip the header row
+        numRows = len(self.table.get())
+        for row in range(1, numRows):  # Starting from 1 to skip the header row
             self.table.edit_row(row, text_color="#000000")
         self.table.pack(anchor="n", expand=True)
 
-
-
-        # self.tableFrame = CTkSF(master=self.mainViewFrame.get(), fg_color="#F0F0F0").pack(expand=True, fill="both", padx=27, pady=21)
-        
-
-
     def enrollAction(self):
-        pass
+
+        enrollDialog = ctk.CTkInputDialog(text="Enter the subject name you want to enroll:", title="Enroll")
+
+        def getSubjectInput():
+            subject = enrollDialog.get_input()
+            enrollDialog.destroy()
+            return subject         
+        
+        subject = getSubjectInput()
+
+        if subject is None:
+            return
+
+        elif not subject.strip():
+            msgbox.showerror(title="Error", message="Subject name cannot be empty!")
+            self.main.after(10, self.enrollAction)
+            return
+
+        email = self.email
+        success, message = db.add_subject(email, subject)
+        if success:
+            msgbox.showinfo(title="Success", message=message)
+            self.refreshTable()
+            enrollDialog.destroy()
+        else:
+            msgbox.showerror(title="Error", message=message)
+            enrollDialog.destroy()
     
-    def removeAction(self):
-        pass
+    def dropAction(self):
+        dropDialog = ctk.CTkInputDialog(text="Enter the subject ID you want to drop:", title="Drop")
+        
+        subject = dropDialog.get_input()
+        dropDialog.destroy()  # Close the dialog after getting input
+
+        # Check if the user pressed "Cancel"
+        if subject is None:
+            return
+
+        elif not subject.strip():
+            msgbox.showerror(title="Error", message="Subject ID cannot be empty!")
+            self.main.after(10, self.dropAction)
+            return
+
+        email = self.email
+        success, message = db.remove_subject(email, subject)
+        if success:
+            msgbox.showinfo(title="Success", message=message)
+            self.refreshTable()
+        else:
+            msgbox.showerror(title="Error", message=message)
+
+
+
+    def refreshTable(self):
+
+        newData = db.get_user_subjects(self.email)
+
+        totalRowNeeded = len(newData)
+        self.table.configure(rows=totalRowNeeded)
+        self.table.update_values(newData)
+        logging.info("newData: %s", newData)
+        logging.info("table: %s", self.table.get())
+        self.table.edit_row(0, text_color="#fff", hover_color="#2A8C55")
+        numRows = len(self.table.get())
+        for row in range(1, numRows):  # Starting from 1 to skip the header row
+            self.table.edit_row(row, text_color="#000000")
+        self.table.pack(anchor="n", expand=True)
+
 
     def changePasswordAction(self):
         from ForgotPasswordNew import ChangePasswordPage as cPP
@@ -118,15 +178,16 @@ class MainPage:
             from SignInNew import SignInPage
             loginPage = SignInPage(tk.Tk())
 
+    
 if __name__ == '__main__':
     main = tk.Tk()
-    # dummyName = "Sherlock Zhao"
-    # dummyStudentId = "000001"
-    # dummyEmail = "sherlock.zhao@university.com"
+    dummyName = "Sherlock Zhao"
+    dummyStudentId = "000001"
+    dummyEmail = "sherlock.zhao@university.com"
     mainPage = MainPage(main
-        # ,
-        # dummyName,
-        # dummyStudentId,
-        # dummyEmail
+        ,
+        dummyName,
+        dummyStudentId,
+        dummyEmail
     )
     main.mainloop()

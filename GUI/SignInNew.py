@@ -64,10 +64,10 @@ class SignInPage:
         success, message = db.verify_student_login(email, password)
         if success:
             msgbox.showinfo(title="Success", message=message)
-            name, email, studentId, subjects = db.get_user_credentials(email)
+            name, email, studentId = db.get_user_credentials(email)
             self.login.destroy()
             from StudentMainPage import MainPage
-            Enrollment_Page = MainPage(tk.Tk(), name, studentId, email, subjects)
+            MainPage = MainPage(tk.Tk(), name, studentId, email)
             # Enrollment_Page.mainloop()
         else:
             msgbox.showerror(title="Error", message=message)
