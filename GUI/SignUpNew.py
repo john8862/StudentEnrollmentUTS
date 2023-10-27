@@ -19,7 +19,6 @@ class SignUpPage:
 
         self.register.title("University Enrollment System v0.9.0")
         self.register.geometry(f"600x600+{x}+{y}")
-        # self.register.geometry(f"600x480+{x}+{y}")
         self.register.resizable(0, 0)
 
         nameIconFile = Image.open("GUI/Image/orange/name-icon.png")
@@ -32,7 +31,6 @@ class SignUpPage:
 
     def createWidgets(self):
         self.sideImage = CustomImage(self.register, "GUI/Image/orange/side-img.png", "GUI/Image/orange/side-img.png", (300, 600), "", expand=True, side="left")
-        # self.registerFrame = CustomFrame(self.register, 300, 480, "#ffffff", False, expand=True, side="right")
         self.registerFrame = CustomFrame(self.register, 300, 600, "#ffffff", False, expand=True, side="right")
 
         self.heading = CustomLabel(self.registerFrame.get(), "Heading", "Create New Account", "#FF6633", "headingFont","w", "w", pady=(50, 5), padx=(25, 0), justify="left")
@@ -74,7 +72,7 @@ class SignUpPage:
         nameError = self.nameEntryError.LabelField["Name"].cget("text")
         emailError = self.emailEntryError.LabelField["Email"].cget("text")
         passwordError = self.passwordEntryError.LabelField["Password"].cget("text")
-        confirmPasswordError = self.confirmPasswordEntryError.LabelField["ConfirmPassword"].cget("text")
+        confirmpasswordError = self.confirmpasswordEntryError.LabelField["ConfirmPassword"].cget("text")
 
         if nameError:
             msgbox.showerror("Error", "Name is required!")
@@ -82,7 +80,7 @@ class SignUpPage:
             msgbox.showerror("Error", "Please enter a valid email address!")
         elif passwordError:
             msgbox.showerror("Error", "Please enter a valid password!")
-        elif confirmPasswordError:
+        elif confirmpasswordError:
             msgbox.showerror("Error", "Passwords do not match!")
 
         else:
