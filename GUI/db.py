@@ -5,16 +5,6 @@ import tkinter.messagebox as msgbox
 
 class MysqlDatabases:
     def __init__(self):
-    #     self.check_users_file()
-
-    #     with open("./students.data", mode="r", encoding="utf-8") as f:
-    #         text = f.read()
-    #     self.users = json.loads(text)
-
-    # def check_users_file(self):
-    #     if not os.path.exists("./students.data"):
-    #         with open("./students.data", mode="w", encoding="utf-8") as f:
-    #             f.write("[]")
 
         try:
             with open("./students.data", mode="r", encoding="utf-8") as f:
@@ -85,13 +75,7 @@ class MysqlDatabases:
         return True, success_message
     
     def change_password(self, email, password):
-        # for user in self.users:
-        #     if email == user["Email"]:
-        #         user["Password"] = password
-        #         with open("./students.data", mode="w", encoding="utf-8") as f:
-        #             json.dump(self.users, f, indent=4)
-        #         return True, "Password changed successfully!"
-        # return False, "Password change failed! Invalid email!"
+
         try:
             user = next(user for user in self.users if user["Email"].lower() == email.lower())
             user["Password"] = password
@@ -108,7 +92,7 @@ class MysqlDatabases:
 
     def get_user_subjects(self, email):
         for user in self.users:
-            if email == user["Email"].lower():
+            if email.lower() == user["Email"].lower():
                 return self.format_subjects(user["Subjects"])
         return None
 
@@ -129,7 +113,7 @@ class MysqlDatabases:
 
     def add_subject(self, email, subject):
         try:
-            user = next(user for user in self.users if user["Email"].lower() == email)
+            user = next(user for user in self.users if user["Email"].lower() == email.lower())
 
             if any(currentSubject["Subject"].lower() == subject.lower() for currentSubject in user.get("Subjects", [])):
                 return False, "You are already enrolled in this subject! Please try with another one!"
@@ -177,7 +161,7 @@ class MysqlDatabases:
 
     def remove_subject(self, email, subject_id):
         try:
-            user = next(user for user in self.users if user["Email"].lower() == email)
+            user = next(user for user in self.users if user["Email"].lower() == email.lower())
             if not user.get("Subjects"):
                 return False, "No subjects enrolled! Please enroll in subject(s) first!"
 
