@@ -66,13 +66,13 @@ class ChangePasswordPage:
     def submitPassword(self):
         emailError = self.emailEntryError.get().cget("text")
         passwordError = self.passwordEntryError.get().cget("text")
-        confirmPasswordError = self.confirmPasswordEntryError.get().cget("text")
+        confirmpasswordError = self.confirmpasswordEntryError.get().cget("text")
 
         if emailError:
             msgbox.showerror("Error", message="Please enter a valid email address!")
         elif passwordError:
             msgbox.showerror("Error", message="Please enter a valid password!")
-        elif confirmPasswordError:
+        elif confirmpasswordError:
             msgbox.showerror("Error", message="Passwords do not match!")
         else:
             email = self.emailEntry.entryVar.get()
