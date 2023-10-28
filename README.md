@@ -2,19 +2,6 @@
 
 This application serves as a coding assessment for the 32555 course at UTS, providing both a command-line interface (CLI) and a graphical user interface (GUI) for university subject enrollment.
 
-## Table of Contents
-
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Screenshots](#screenshots)
-- [FAQs](#faqs)
-- [Support](#support)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-
 ## Features
 
 - **CLI Mode**: Engage with the application using command-line commands.
@@ -159,7 +146,7 @@ The development of this application benefited from several external libraries an
 
 ### Team Members and Collaborators
 
-Special thanks to [@ink-commit](https://github.com/ink-commit) for being an integral team member and for their efforts in completing the first version of this program.
+Special thanks to [@ink-commits](https://github.com/ink-commits) for being an integral team member and for their efforts in completing the first version of this program.
 
 ## Contributing
 
