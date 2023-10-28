@@ -124,6 +124,12 @@ A: This development is for subject assessment. The update frequency is uncertain
 
 For support, users are encouraged to raise an issue in the [GitHub repository](https://github.com/john8862/StudentEnrollmentUTS.git). The authors will review and address it when time permits, but there's no guaranteed SLA (Service Level Agreement).
 
+## License
+
+Include the license you're using for your project.
+
+This project is licensed under the GPL-v3.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+
 ## Acknowledgements
 
 ### Libraries and Modules
