@@ -44,21 +44,24 @@ class Admin:
             return grade_dict
         else:
             for student in students:
-                avg_mark = Admin.average_mark(student)
-
-                if 0 <= avg_mark < 50:
-                    grade = 'Z'
-                elif 50 <= avg_mark < 65:
-                    grade = 'P'
-                elif 65 <= avg_mark < 75:
-                    grade = 'C'
-                elif 75 <= avg_mark < 85:
-                    grade = 'D'
+                if student.subject == []:
+                    return None
                 else:
-                    grade = 'HD'
-                
-                grade_dict[grade].append((student, student.subject, avg_mark, grade))
-            return grade_dict
+                    avg_mark = Admin.average_mark(student)
+
+                    if 0 <= avg_mark < 50:
+                        grade = 'Z'
+                    elif 50 <= avg_mark < 65:
+                        grade = 'P'
+                    elif 65 <= avg_mark < 75:
+                        grade = 'C'
+                    elif 75 <= avg_mark < 85:
+                        grade = 'D'
+                    else:
+                        grade = 'HD'
+                    
+                    grade_dict[grade].append((student, student.subject, avg_mark, grade))
+                return grade_dict
 
 
     @staticmethod
@@ -99,12 +102,15 @@ class Admin:
             return
 
         print("[", end="")
-        for idx, (student, subj, avg_mark, grade) in enumerate(subject_list):
+        for idx, item in enumerate(subject_list):
 
-            if not subj:
+            if len(item) == 2:
+                student, _ = item
                 print(f"{student.name} :: {student.student_id}", end="")
             else:
+                student, subj, avg_mark, grade = item
                 print(f"{student.name} :: {student.student_id} --> GRADE: {grade} - MARK : {avg_mark}", end="")
+                
             if idx != len(subject_list) - 1:
                 print(", ", end="")
         print("]")

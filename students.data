@@ -5,50 +5,37 @@
         "Password": "QWASZX123456",
         "Subject": [
             {
-                "Subject": "robotics",
-                "ID": 731,
-                "Mark": 86.75,
-                "Grade": "HD"
-            },
-            {
-                "Subject": "database",
-                "ID": 768,
-                "Mark": 44.05,
+                "Subject": "math",
+                "ID": 695,
+                "Mark": 42.19,
                 "Grade": "Z"
             },
             {
-                "Subject": "test",
-                "ID": 522,
-                "Mark": 97.4,
+                "Subject": "a",
+                "ID": "201",
+                "Mark": 25.86,
+                "Grade": "Z"
+            },
+            {
+                "Subject": "b",
+                "ID": "015",
+                "Mark": 96.79,
                 "Grade": "HD"
+            },
+            {
+                "Subject": "c",
+                "ID": "842",
+                "Mark": 74.96,
+                "Grade": "C"
             }
         ],
-        "Student_ID": "090572"
+        "Student_ID": "489178"
     },
     {
-        "Name": "Sherlock",
-        "Email": "Sherlock.Zhao@university.com",
-        "Password": "QWASZX123",
-        "Subject": [
-            {
-                "Subject": "math",
-                "ID": 566,
-                "Mark": 93.58,
-                "Grade": "HD"
-            },
-            {
-                "Subject": "Software",
-                "ID": 100,
-                "Mark": 62.67,
-                "Grade": "P"
-            },
-            {
-                "Subject": "test",
-                "ID": 401,
-                "Mark": 29.75,
-                "Grade": "Z"
-            }
-        ],
-        "Student_ID": "478937"
+        "Name": "Test Test",
+        "Email": "Test.Test@university.com",
+        "Password": "QWASZX123456",
+        "Subject": [],
+        "Student_ID": "757891"
     }
 ]

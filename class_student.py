@@ -13,6 +13,32 @@ class Student:
             self.generate_student_id()
             self.save_students_file()
 
+    @staticmethod
+    def load_students_from_file():
+        global students
+        students.clear()  # Clear the existing list
+        try:
+            with open("students.data", "r") as file:
+                data = json.load(file)
+                for student_data in data:
+                    id = student_data['Student_ID']
+                    del student_data['Student_ID']
+                    student_data = {
+                        'name': student_data['Name'],
+                        'email': student_data['Email'],
+                        'password': student_data['Password'],
+                        'subject': student_data['Subject'],
+                    }
+
+                    student = Student(**student_data, from_file=True)
+                    student.student_id = id
+                    students.append(student)
+
+        except FileNotFoundError:
+            with open("students.data", "w") as file:
+                json.dump([], file)
+
+
     def generate_student_id(self):
         global students
 
@@ -53,7 +79,7 @@ class Student:
     
     @staticmethod
     def is_valid_subject(subject):
-        subject_pattern = r'^[a-zA-Z ]*$'
+        subject_pattern = r'^[^\s]+$'
         return re.match(subject_pattern, subject)
     
     def enrol_subject(self, subject):
@@ -66,10 +92,10 @@ class Student:
                 print(Fore.RED + f"\t\tYou are already enrolled in {subject}." + Style.RESET_ALL)
                 return
         else:
-            random_number = str(random.randint(0, 999)).zfill(3)
+            random_number = str(random.randint(1, 999)).zfill(3)
             # 检查生成的数字是否重复
-            while any(s['ID'] == int(random_number) for s in self.subject):
-                random_number = str(random.randint(0, 999)).zfill(3)
+            while any(s['ID'] == random_number for s in self.subject):
+                random_number = str(random.randint(1, 999)).zfill(3)
             # 将随机数字添加到subject中
             subject_with_number = f"{subject}-{random_number}"
             mark = random.randint(2500, 10000) / 100.00
@@ -85,10 +111,10 @@ class Student:
             else:
                 grade = "HD"
 
-            subject_with_grade = f"{subject}::{random_number} -- Mark = {mark} -- Grade = {grade}"
+            # subject_with_grade = f"{subject}::{random_number} -- Mark = {mark} -- Grade = {grade}"
             subject_dict = {
                 "Subject": subject,
-                "ID": int(random_number),
+                "ID": random_number,
                 "Mark": mark,
                 "Grade": grade
             }

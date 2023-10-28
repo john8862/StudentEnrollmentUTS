@@ -42,6 +42,7 @@ def main():
                 student_choice = input(Fore.CYAN + "\tStudent System(l/r/x):" + Style.RESET_ALL).lower()
                 if student_choice == "l":
                     print(Fore.GREEN + "\tStudent Sign In" + Style.RESET_ALL)
+                    Student.load_students_from_file()
                     while True:
                         email = input("\tEnter your email: ")
                         password = input("\tEnter your password: ")
@@ -82,6 +83,14 @@ def main():
                                             break
                                         else:
                                             print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
+                                            while True:
+                                                confirm_password = input("\t\tConfirm password: ")
+                                                if new_password == confirm_password:
+                                                    student.change_password(new_password)
+                                                    break
+                                                else:
+                                                    print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
+
                                 elif student_menu_choice == "e":
                                     while True:
                                         subject = input("\t\tEnter the subject you want to enrol in: ")
