@@ -128,7 +128,7 @@ For support, users are encouraged to raise an issue in the [GitHub repository](h
 
 Include the license you're using for your project.
 
-This project is licensed under the GPL-v3.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the GPL-v3.0 License - see the [LICENSE.md](https://github.com/john8862/StudentEnrollmentUTS/blob/main/LICENSE) file for details.
 
 ## Acknowledgements
 
