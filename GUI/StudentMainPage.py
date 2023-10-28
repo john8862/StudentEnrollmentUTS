@@ -2,14 +2,11 @@ import tkinter as tk
 import tkinter.messagebox as msgbox
 import customtkinter as ctk
 import time
-# from customtkinter import CTkScrollableFrame as CTkSF
+
 from CTkTable import CTkTable
 from PIL import Image
 from Widgets import *
 from db import db
-
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 class MainPage:
     def __init__(self, master, name, studentId, email):
@@ -20,13 +17,12 @@ class MainPage:
 
         self.initializeWindow()
         self.createWidgets()
-        print(f"{self.name}\n{self.studentId}\n{self.email}")
 
     def initializeWindow(self):
         x = int(self.main.winfo_screenwidth() / 3 - self.main.winfo_reqwidth() / 3)
         y = int(self.main.winfo_screenheight() / 3 - self.main.winfo_reqheight() / 3)
 
-        self.main.title("University Enrollment System v0.9.0")
+        self.main.title("GUIUniApp v1.0.0")
         self.main.geometry(f"856x645+{x}+{y}")
         self.main.resizable(0, 0)
 
@@ -51,7 +47,6 @@ class MainPage:
         self.sidebarFrame.get().configure(corner_radius=0)
 
         self.sidebarLogoImgLabel = CustomImage(self.sidebarFrame.get(), "GUI/Image/system/logo.png", "GUI/Image/system/logo.png", (77.68, 85.42), "", expand=False, anchor="center", pady=(38, 0))
-        # self.enrollButton = CustomButton(self.sidebarFrame.get(), "", "Enrollment", "transparent", "#207244", "#fff", "buttonFont", "center", self.enrollAction, pady=(60, 0))
         
         self.accountLabel = CustomLabel(self.sidebarFrame.get(), "account", "  Student Information:", "#FFFFFF", "largeLabelFont", "w", "w", pady=(60, 0), padx=(25, 0), justify="left", image=self.accountImg, compound="left")
         self.accountStudentIdLabel = CustomLabel(self.sidebarFrame.get(), "accountStudentId", f"  {self.studentId}", "#FFFFFF", "labelFont", "w", "w", pady=(15, 0), padx=(25, 0), justify="left")
@@ -82,7 +77,6 @@ class MainPage:
 
         self.tableFrame = CustomFrame(self.mainViewFrame.get(), None, None, "transparent", True, anchor="n", fill="both", expand=True, padx=27, pady=21)
         self.table = CTkTable(master=self.tableFrame.get(), values=db.get_user_subjects(self.email), corner_radius=5, colors=["#E6E6E6", "#EEEEEE"], header_color="#2A8C55", hover_color="#B4B4B4")
-        logging.info("table: %s", self.table.get())
         self.table.edit_row(0, text_color="#fff", hover_color="#2A8C55")
         numRows = len(self.table.get())
         for row in range(1, numRows):  # Starting from 1 to skip the header row
@@ -150,8 +144,6 @@ class MainPage:
         totalRowNeeded = len(newData)
         self.table.configure(rows=totalRowNeeded)
         self.table.update_values(newData)
-        logging.info("newData: %s", newData)
-        logging.info("table: %s", self.table.get())
         self.table.edit_row(0, text_color="#fff", hover_color="#2A8C55")
         numRows = len(self.table.get())
         for row in range(1, numRows):  # Starting from 1 to skip the header row
@@ -172,7 +164,6 @@ class MainPage:
         
     def logoutAction(self):
         result = msgbox.askquestion("Logout", "Are you sure you want to logout?")
-        logging.info("result: %s", result)
         if result == "yes": 
             self.main.destroy()
             from SignInNew import SignInPage

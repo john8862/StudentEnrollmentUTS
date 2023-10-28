@@ -18,7 +18,7 @@ class ChangePasswordPage:
         x = int(self.forgotPassword.winfo_screenwidth() / 3 - self.forgotPassword.winfo_reqwidth() / 3)
         y = int(self.forgotPassword.winfo_screenheight() / 3 - self.forgotPassword.winfo_reqheight() / 3)
 
-        self.forgotPassword.title("University Enrollment System v0.9.0")
+        self.forgotPassword.title("GUIUniApp v1.0.0")
         self.forgotPassword.geometry(f"600x520+{x}+{y}")
         self.forgotPassword.resizable(0, 0)
 

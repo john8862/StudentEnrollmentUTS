@@ -3,9 +3,6 @@ import customtkinter as ctk
 
 from Widgets import CustomFont
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
 class Validator:
     
     def __init__(self, fieldName, entry, errorLabel, passwordValue: str=None):
@@ -92,7 +89,6 @@ class Validator:
     def confirmPassword(self, passwordValue):
         confirmPassword = self.entry.get().get()
         errorLabel = self.errorLabel.get()
-        logging.info("ConfirmPassword: %s", confirmPassword)
 
         if confirmPassword != passwordValue:
             self.entry.get().configure(bg_color="#FF0000", text_color="#000000")

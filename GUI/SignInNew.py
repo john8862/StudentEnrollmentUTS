@@ -18,7 +18,7 @@ class SignInPage:
         x = int(self.login.winfo_screenwidth() / 3 - self.login.winfo_reqwidth() / 3)
         y = int(self.login.winfo_screenheight() / 3 - self.login.winfo_reqheight() / 3)
 
-        self.login.title("University Enrollment System v0.9.0")
+        self.login.title("GUIUniApp v1.0.0")
         self.login.geometry(f"600x480+{x}+{y}")
         self.login.resizable(0, 0)
 

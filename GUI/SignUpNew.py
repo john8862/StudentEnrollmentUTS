@@ -17,7 +17,7 @@ class SignUpPage:
         x = int(self.register.winfo_screenwidth() / 3 - self.register.winfo_reqwidth() / 3)
         y = int(self.register.winfo_screenheight() / 3 - self.register.winfo_reqheight() / 3)
 
-        self.register.title("University Enrollment System v0.9.0")
+        self.register.title("GUIUniApp v1.0.0")
         self.register.geometry(f"600x600+{x}+{y}")
         self.register.resizable(0, 0)
 
