@@ -9,7 +9,7 @@ This application serves as a coding assessment for the 32555 course at UTS, prov
 
 ## Getting Started
 
-## Prerequisites
+### Prerequisites
 
 Before you begin, ensure you have met the following requirements:
 
@@ -28,7 +28,7 @@ Before you begin, ensure you have met the following requirements:
    pip3 install CTkTable
    pip3 install Pillow  # PIL is available as Pillow in PyPI
 
-## Installation
+### Installation
 
 To set up the `UTS 32555 University Application`, follow these steps:
 
