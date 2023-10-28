@@ -123,17 +123,8 @@ def main():
 
 
                     
-                        # while True:
-                        name = input("\tEnter your name: ")
-                            # Extract the prefix from the email and replace '.' with ' '
-                            # email_name = email.split('@')[0].replace('.', ' ')
-                            # if name != email_name:
-                            #     print(Fore.RED + "\tName does not match with the email prefix." + Style.RESET_ALL)
-                            # else:
-                            #     break
 
-                        
-                        
+                        name = input("\tEnter your name: ")
 
                         student = Student(name, email, password)
                         print(Fore.YELLOW + f"\tEnrolling Student {name}." + Style.RESET_ALL)

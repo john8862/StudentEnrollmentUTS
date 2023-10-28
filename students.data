@@ -5,12 +5,6 @@
         "Password": "QWASZX123456",
         "Subject": [
             {
-                "Subject": "math",
-                "ID": 549,
-                "Mark": 59.67,
-                "Grade": "P"
-            },
-            {
                 "Subject": "robotics",
                 "ID": 731,
                 "Mark": 86.75,

@@ -59,6 +59,12 @@ class Student:
     def enrol_subject(self, subject):
         if len(self.subject) >= 4:
             print(Fore.RED + "\t\tStudents are allowed to enrol in 4 subjects only." + Style.RESET_ALL)
+            return
+
+        for subj in self.subject:
+            if subj['Subject'].lower() == subject.lower():
+                print(Fore.RED + f"\t\tYou are already enrolled in {subject}." + Style.RESET_ALL)
+                return
         else:
             random_number = str(random.randint(0, 999)).zfill(3)
             # 检查生成的数字是否重复
