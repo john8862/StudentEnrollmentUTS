@@ -42,29 +42,36 @@ def main():
                     print(Fore.GREEN + "\tStudent Sign In" + Style.RESET_ALL)
                     Student.load_students_from_file()
                     while True:
-                        email = input("\tEnter your email: ")
-                        password = input("\tEnter your password: ")
-                        # Check the validity of email and password formats
-                        if not Student.is_valid_email(email) or not Student.is_valid_password(password):
-                            print(Fore.RED + "\tIncorrect email or password format." + Style.RESET_ALL)
-                            continue
-                        else:
+                        matched_student = None
+                        try:
+                            email = input("\tEnter your email: ")
+                            password = input("\tEnter your password: ")
+
+                            # Check the validity of email and password formats together
+                            if not Student.is_valid_email(email) or not Student.is_valid_password(password):
+                                raise ValueError("Incorrect email or password format.")
+                                continue
+
                             print(Fore.YELLOW + "\tEmail and password formats acceptable." + Style.RESET_ALL)
 
-                        matched_student = None
+                            for student in students:
+                                if student.email.lower() == email.lower() and student.password == password:
+                                    print(Fore.YELLOW + "\t\tSign in successful." + Style.RESET_ALL)
+                                    matched_student = student
+                                    break
 
-                        for student in students:
-                            if student.email.lower() == email.lower() and student.password == password:
-                                print(Fore.YELLOW + "\t\tSign in successful." + Style.RESET_ALL)
-                                matched_student = student
+                            if not matched_student:
+                                if not Student.is_email_exists(email):
+                                    raise ValueError("Student does not exist.")
+                                else:
+                                    raise ValueError("Invalid email or password.")
+
+                        except ValueError as e:
+                            print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
+
+                            if str(e) in ["Student does not exist.", "Invalid email or password."]:
                                 break
-                        if not matched_student:
-                            if not Student.is_email_exists(email):
-                                print(Fore.RED + "\tStudent does not exist." + Style.RESET_ALL)
-                                break
-                            else:
-                                print(Fore.RED + "\tInvalid email or password." + Style.RESET_ALL)
-                                break
+
                         back_to_main_menu = False
                         if matched_student:  # If a student was matched, proceed to the student menu.                         
                             while True:
