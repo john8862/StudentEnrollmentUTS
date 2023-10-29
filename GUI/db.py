@@ -19,14 +19,24 @@ class MysqlDatabases:
             with open("./students.data", mode="w", encoding="utf-8") as f:
                 json.dump(self.users, f, indent=4)
     
+    # def verify_student_login(self, email, password):
+    #     for user in self.users:
+    #         if email.lower() == user["Email"].lower(): 
+    #             if password == user["Password"]:
+    #                 return True, "Login successful!"
+    #             else:
+    #                 return False, "Login failed! Invalid password!"
+    #     return False, "Login failed! Invalid username!"
+
     def verify_student_login(self, email, password):
-        for user in self.users:
-            if email.lower() == user["Email"].lower(): 
-                if password == user["Password"]:
-                    return True, "Login successful!"
-                else:
-                    return False, "Login failed! Invalid password!"
-        return False, "Login failed! Invalid username!"
+        try:
+            user = next(user for user in self.users if email.lower() == user["Email"].lower())
+            if user["Password"] == password:
+                return True, "Login successful!"
+            else:
+                return False, "Login failed! Invalid password!"
+        except StopIteration:
+            return False, "Login failed! Invalid email!"
 
     def get_user_credentials(self, email):
         for user in self.users:
