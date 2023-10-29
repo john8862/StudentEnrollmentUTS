@@ -1,41 +1,30 @@
 [
     {
-        "Name": "Yulong Lin",
-        "Email": "Yulong.Lin@university.com",
-        "Password": "QWASZX123456",
-        "Subject": [
-            {
-                "Subject": "math",
-                "ID": 695,
-                "Mark": 42.19,
-                "Grade": "Z"
-            },
-            {
-                "Subject": "a",
-                "ID": "201",
-                "Mark": 25.86,
-                "Grade": "Z"
-            },
-            {
-                "Subject": "b",
-                "ID": "015",
-                "Mark": 96.79,
-                "Grade": "HD"
-            },
-            {
-                "Subject": "c",
-                "ID": "842",
-                "Mark": 74.96,
-                "Grade": "C"
-            }
-        ],
-        "Student_ID": "489178"
+        "Name": "yulong lin",
+        "Email": "yulong.lin@university.com",
+        "Password": "QWASZX123",
+        "Subject": [],
+        "Student_ID": "164972"
     },
     {
-        "Name": "Test Test",
-        "Email": "Test.Test@university.com",
-        "Password": "QWASZX123456",
+        "Name": "yulong lin",
+        "Email": "yulong.lin@university.com",
+        "Password": "QWASZX123",
         "Subject": [],
-        "Student_ID": "757891"
+        "Student_ID": "164972"
+    },
+    {
+        "Name": "test test",
+        "Email": "test.test@university.com",
+        "Password": "QWASZX123",
+        "Subjects": [],
+        "Student_ID": "840497"
+    },
+    {
+        "Name": "test",
+        "Email": "test.test1@university.com",
+        "Password": "QWASZX123",
+        "Subjects": [],
+        "Student_ID": "276536"
     }
 ]

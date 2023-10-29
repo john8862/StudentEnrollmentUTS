@@ -126,7 +126,7 @@ class Student:
 
     def remove_subject(self, subject_id):
         for subject in self.subject:
-            if subject['ID'] == int(subject_id):
+            if str(subject['ID']) == str(subject_id):
                 print(Fore.YELLOW + f"\t\tDropping {subject['Subject']}-{subject['ID']}." + Style.RESET_ALL)
                 self.subject.remove(subject)
                 print(Fore.YELLOW + f"\t\tYou are now enrolled in {len(self.subject)} out of 4 subjects." + Style.RESET_ALL)

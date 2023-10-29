@@ -83,14 +83,17 @@ def main():
                                             break
                                         else:
                                             print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
+                                            Confirm = None
                                             while True:
                                                 confirm_password = input("\t\tConfirm password: ")
                                                 if new_password == confirm_password:
                                                     student.change_password(new_password)
+                                                    Confirm = True
                                                     break
                                                 else:
                                                     print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
-
+                                            if Confirm == True:
+                                                break
                                 elif student_menu_choice == "e":
                                     while True:
                                         subject = input("\t\tEnter the subject you want to enrol in: ")
@@ -128,10 +131,6 @@ def main():
                                 else:
                                     print(Fore.YELLOW + "\tEmail and password formats acceptable" + Style.RESET_ALL)
                                     break
-                                    
-
-
-                    
 
                         name = input("\tEnter your name: ")
 

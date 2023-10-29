@@ -30,6 +30,7 @@ class Admin:
             total += subj['Mark']
         return round(total / len(student.subject), 2)
     
+
     @staticmethod
     def list_students_by_all_grades():
         grade_dict = {
@@ -45,7 +46,7 @@ class Admin:
         else:
             for student in students:
                 if student.subject == []:
-                    return None
+                    continue
                 else:
                     avg_mark = Admin.average_mark(student)
 
@@ -61,7 +62,7 @@ class Admin:
                         grade = 'HD'
                     
                     grade_dict[grade].append((student, student.subject, avg_mark, grade))
-                return grade_dict
+            return grade_dict
 
 
     @staticmethod
