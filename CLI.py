@@ -96,8 +96,12 @@ def main():
                                         if not Student.is_valid_subject(subject):
                                             print(Fore.RED + "\t\tInvalid subject format. Subject must only contain letters and spaces." + Style.RESET_ALL)
                                         else:
-                                            student.enrol_subject(subject)
-                                            break
+                                            try:
+                                                message = student.enrol_subject(subject)
+                                                print(Fore.YELLOW + "\t\t" + message.replace('\n', '\n\t\t') + Style.RESET_ALL)
+                                                break
+                                            except ValueError as e:
+                                                print(Fore.RED + "\t\t" + str(e) + Style.RESET_ALL)
                                 elif student_menu_choice == "r":
                                     subject_id = input("\t\tRemove subject by ID:  ")
                                     try:

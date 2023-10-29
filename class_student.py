@@ -84,45 +84,45 @@ class Student:
     
     def enrol_subject(self, subject):
         if len(self.subject) >= 4:
-            print(Fore.RED + "\t\tStudents are allowed to enrol in 4 subjects only." + Style.RESET_ALL)
-            return
+            raise ValueError("Students are allowed to enrol in 4 subjects only.")
 
         for subj in self.subject:
             if subj['Subject'].lower() == subject.lower():
-                print(Fore.RED + f"\t\tYou are already enrolled in {subject}." + Style.RESET_ALL)
-                return
-        else:
-            random_number = str(random.randint(1, 999)).zfill(3)
-            # 检查生成的数字是否重复
-            while any(s['ID'] == random_number for s in self.subject):
-                random_number = str(random.randint(1, 999)).zfill(3)
-            # 将随机数字添加到subject中
-            subject_with_number = f"{subject}-{random_number}"
-            mark = random.randint(2500, 10000) / 100.00
-            # 根据分数计算等级
-            if mark < 50:
-                grade = "Z"
-            elif mark < 65:
-                grade = "P"
-            elif mark < 75:
-                grade = "C"
-            elif mark < 85:
-                grade = "D"
-            else:
-                grade = "HD"
+                raise ValueError(f"You are already enrolled in {subject}.")
 
-            # subject_with_grade = f"{subject}::{random_number} -- Mark = {mark} -- Grade = {grade}"
-            subject_dict = {
-                "Subject": subject,
-                "ID": random_number,
-                "Mark": mark,
-                "Grade": grade
-            }
-            self.subject.append(subject_dict)
-            print(Fore.YELLOW + f"\t\tEnrolling in {subject_with_number}." + Style.RESET_ALL)
-            print(Fore.YELLOW + f"\t\tYou are now enrolled in {len(self.subject)} out of 4 subjects." + Style.RESET_ALL)
-            
-            self.save_students_file()
+        random_number = str(random.randint(1, 999)).zfill(3)
+        # 检查生成的数字是否重复
+        while any(s['ID'] == random_number for s in self.subject):
+            random_number = str(random.randint(1, 999)).zfill(3)
+        
+        # 将随机数字添加到subject中
+        subject_with_number = f"{subject}-{random_number}"
+        mark = random.randint(2500, 10000) / 100.00
+
+        # 根据分数计算等级
+        if mark < 50:
+            grade = "Z"
+        elif mark < 65:
+            grade = "P"
+        elif mark < 75:
+            grade = "C"
+        elif mark < 85:
+            grade = "D"
+        else:
+            grade = "HD"
+
+        subject_dict = {
+            "Subject": subject,
+            "ID": random_number,
+            "Mark": mark,
+            "Grade": grade
+        }
+        self.subject.append(subject_dict)
+        
+        success_message = f"Enrolling in {subject_with_number}." \
+                        f"\nYou are now enrolled in {len(self.subject)} out of 4 subjects."
+        return success_message
+
 
     def remove_subject(self, subject_id):
 
