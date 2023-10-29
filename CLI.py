@@ -58,7 +58,7 @@ def main():
                         matched_student = None
 
                         for student in students:
-                            if student.email == email and student.password == password:
+                            if student.email.lower() == email.lower() and student.password == password:
                                 print(Fore.YELLOW + "\t\tSign in successful." + Style.RESET_ALL)
                                 matched_student = student
                                 break

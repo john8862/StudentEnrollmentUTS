@@ -59,7 +59,7 @@ class Student:
 
     @staticmethod
     def is_valid_password(password):
-        password_pattern = r'^[A-Z](?=.*\d.*\d.*\d)(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z].*[a-zA-Z]).*$'
+        password_pattern = r'^[A-Z](?=(?:[^0-9]*[0-9]){3})(?=(?:[^a-zA-Z]*[a-zA-Z]){5}).*$'
         return re.match(password_pattern, password)
     
     @staticmethod
@@ -68,7 +68,7 @@ class Student:
     
     @staticmethod
     def is_email_exists(email):
-        return any(student.email == email for student in students)
+        return any(student.email.lower() == email.lower() for student in students)
     
     @staticmethod
     def get_student_by_email(email):
