@@ -133,7 +133,9 @@ def main():
 
                             if not Student.is_valid_email(email) or not Student.is_valid_password(password):
                                 raise ValueError("\tIncorrect email or password format.")
-
+                            
+                            print(Fore.YELLOW + "\tEmail and password formats acceptable." + Style.RESET_ALL)
+                            
                             existing_student = Student.get_student_by_email(email)
                             if existing_student:
                                 raise ValueError(f"\tStudent {existing_student.name} already exists")
