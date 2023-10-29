@@ -16,7 +16,7 @@ class Student:
     @staticmethod
     def load_students_from_file():
         global students
-        students.clear()  # Clear the existing list
+        students.clear()
         try:
             with open("students.data", "r") as file:
                 data = json.load(file)
@@ -42,7 +42,6 @@ class Student:
     def generate_student_id(self):
         global students
 
-        # If there are no students, start with ID '000001'
         generated_id = str(random.randint(0, 999999)).zfill(6)
 
 
@@ -91,15 +90,13 @@ class Student:
                 raise ValueError(f"You are already enrolled in {subject}.")
 
         random_number = str(random.randint(1, 999)).zfill(3)
-        # 检查生成的数字是否重复
+
         while any(s['ID'] == random_number for s in self.subject):
             random_number = str(random.randint(1, 999)).zfill(3)
         
-        # 将随机数字添加到subject中
         subject_with_number = f"{subject}-{random_number}"
         mark = random.randint(2500, 10000) / 100.00
 
-        # 根据分数计算等级
         if mark < 50:
             grade = "Z"
         elif mark < 65:
@@ -145,7 +142,7 @@ class Student:
     def save_students_file(self):
         def extract_subject_info(subj_str):
             if isinstance(subj_str, str):
-                # Original extraction code
+
                 subj_name, rest = subj_str.split("::", 1)
                 subj_id, rest = rest.split(" -- Mark = ", 1)
                 mark, grade = rest.split(" -- Grade = ", 1)
@@ -156,7 +153,6 @@ class Student:
                     "Grade": grade.strip()
                 }
             elif isinstance(subj_str, dict):
-                # If it's already a dictionary, just return it
                 return subj_str
         data = [{
             "Name": student.name,
@@ -175,7 +171,7 @@ class Student:
         if Student.is_valid_password(new_password):
             self.password = new_password
             print(Fore.YELLOW + "\t\tPassword successfully changed!" + Style.RESET_ALL)
-            self.save_students_file()  # Save the updated password
+            self.save_students_file()
         else:
             print(Fore.RED + "\t\tIncorrect password format." + Style.RESET_ALL)
 

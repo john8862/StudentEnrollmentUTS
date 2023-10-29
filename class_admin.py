@@ -89,7 +89,7 @@ class Admin:
                 continue
 
 
-            if grade == "Z":  # Assuming Z is a failing grade, adjust as necessary
+            if grade == "Z":
                 failed_subjects.append((student, student.subject, avg_mark, grade))
             else:
                 passed_subjects.append((student, student.subject, avg_mark, grade))
@@ -119,32 +119,26 @@ class Admin:
     @staticmethod
     def remove_student(id):
         global students
-        student_to_remove = None
-        for student in students:
-            if student.student_id == id:
-                student_to_remove = student
-                break
+        student_to_remove = next((student for student in students if student.student_id == id), None)
 
-        if student_to_remove:
-            students.remove(student_to_remove)
-            print(Fore.YELLOW + f"\tRemoving student {id} Account." + Style.RESET_ALL)
-            # Save the updated list to the file
-            student_to_remove.save_students_file()
-        else:
-            print(Fore.RED + f"\tStudent {id} does not exist." + Style.RESET_ALL)
+        if student_to_remove is None:
+            raise ValueError(f"Student {id} does not exist.")
+        
+        students.remove(student_to_remove)
+        student_to_remove.save_students_file()
+        
+        return f"Removing student {id} Account."
 
     @staticmethod
     def clear_all_students():
         global students
-        print(Fore.YELLOW + "\tClearing students database" + Style.RESET_ALL)
-        confirmation = input(Fore.RED + "\tAre you sure you want to clear the database (Y)ES/(N)O: " + Style.RESET_ALL).strip().upper()
+        confirmation = input().strip().upper()
         if confirmation == 'Y':
             students = []
-            # Save the empty list to the file
             with open("students.data", "w") as file:
-                json.dump([], file)  # directly dump an empty list to the file
-            print(Fore.YELLOW + "\tStudents data cleared." + Style.RESET_ALL)
+                json.dump([], file)
+            return "\tStudents data cleared."
         elif confirmation == 'N':
-            print("\tOperation cancelled.")
+            return "\tOperation cancelled."
         else:
-            print("\tInvaild operation.")
+            raise ValueError("Invalid operation.")

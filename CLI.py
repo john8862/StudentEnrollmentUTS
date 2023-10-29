@@ -19,9 +19,6 @@ def main():
                     'password': student_data['Password'],
                     'subject': student_data['Subjects'],
                 }
-                # **student_data 是 Python 中的解包（unpacking）操作
-                # 将 student_data 字典中的每一对键值对作为关键字参数传递给 Student 类的构造函数 __init__
-
 
                 student = Student(**student_data, from_file = True)
                 student.student_id = id
@@ -47,7 +44,6 @@ def main():
                             email = input("\tEnter your email: ")
                             password = input("\tEnter your password: ")
 
-                            # Check the validity of email and password formats together
                             if not Student.is_valid_email(email) or not Student.is_valid_password(password):
                                 raise ValueError("Incorrect email or password format.")
                                 continue
@@ -73,7 +69,7 @@ def main():
                                 break
 
                         back_to_main_menu = False
-                        if matched_student:  # If a student was matched, proceed to the student menu.                         
+                        if matched_student:                 
                             while True:
                                 student_menu_choice = input(Fore.CYAN + "\t\tStudent Course Menu (c/e/r/s/x):" + Style.RESET_ALL).lower()
                                 if student_menu_choice == "c":
@@ -167,26 +163,32 @@ def main():
 
             while True:
                 admin_choice = input(Fore.CYAN + "\tAdmin System (c/g/p/r/s/x): " + Style.RESET_ALL)
+
                 if admin_choice == "c":
-                    Admin.clear_all_students()
+                    print(Fore.YELLOW + "\tClearing students database" + Style.RESET_ALL)
+                    print(Fore.RED + "\tAre you sure you want to clear the database (Y)ES/(N)O: ", end='' + Style.RESET_ALL)
                     
+                    try:
+                        message = Admin.clear_all_students()
+                        print(Fore.YELLOW + message + Style.RESET_ALL)
+                    except ValueError as e:
+                        print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
+
                 elif admin_choice == "g":
                     print(Fore.YELLOW + "\tGrade Grouping" + Style.RESET_ALL)
                     grade_students_dict = Admin.list_students_by_all_grades()
                     for grade, grade_subjects in grade_students_dict.items():
-                        if grade_subjects:  # Check if the grade has any students
+                        if grade_subjects:
                             print(f"\t{grade} --> ", end="")
                             Admin.print_student_subjects(grade_subjects)
                         
-
                 elif admin_choice == "p":
                     passed_subjects, failed_subjects, no_record_subjects = Admin.partition_students_pass_fail()
                     print(Fore.YELLOW + "\tPASS/FALL Partition" + Style.RESET_ALL)
-                    # Your code to print passed subjects
+
                     print("\tPASS --> ", end="")
                     Admin.print_student_subjects(passed_subjects)
 
-                    # Similar code for failed_subjects and no_record_subjects
                     print("\tFAIL --> ", end="")
                     Admin.print_student_subjects(failed_subjects)
 
@@ -194,8 +196,12 @@ def main():
                     Admin.print_student_subjects(no_record_subjects)
                     
                 elif admin_choice == "r":
-                    id = input("\tRemove by ID: ")
-                    Admin.remove_student(id)
+                    try:
+                        id = input("\tRemove by ID: ")
+                        message = Admin.remove_student(id)
+                        print(Fore.YELLOW + "\t" + message + Style.RESET_ALL)
+                    except ValueError as e:
+                        print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
 
                 elif admin_choice == "s":
                     Admin.view_all_students()
@@ -211,7 +217,6 @@ def main():
         else:
             print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
             continue
-
 
 if __name__ == "__main__":
     main()
