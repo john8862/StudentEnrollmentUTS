@@ -27,7 +27,7 @@ class Student:
                         'name': student_data['Name'],
                         'email': student_data['Email'],
                         'password': student_data['Password'],
-                        'subject': student_data['Subject'],
+                        'subject': student_data['Subjects'],
                     }
 
                     student = Student(**student_data, from_file=True)
@@ -162,7 +162,7 @@ class Student:
             "Name": student.name,
             "Email": student.email,
             "Password": student.password,
-            "Subject": [extract_subject_info(subject) for subject in student.subject],
+            "Subjects": [extract_subject_info(subject) for subject in student.subject],
             "Student_ID": student.student_id,
             }
             for student in students

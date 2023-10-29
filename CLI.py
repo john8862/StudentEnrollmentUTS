@@ -19,7 +19,7 @@ def main():
                     'name': student_data['Name'],
                     'email': student_data['Email'],
                     'password': student_data['Password'],
-                    'subject': student_data['Subject'],
+                    'subjectl': student_data['Subjects'],
                 }
                 # **student_data 是 Python 中的解包（unpacking）操作
                 # 将 student_data 字典中的每一对键值对作为关键字参数传递给 Student 类的构造函数 __init__
@@ -31,7 +31,7 @@ def main():
 
     except FileNotFoundError:
         with open("students.data", "w") as file:
-            json.dump({}, file)
+            json.dump([], file)
 
     while True:
         choice = input(Fore.CYAN + "University System: (A)dmin, (S)tudent, or X :" + Style.RESET_ALL).upper()
@@ -52,8 +52,6 @@ def main():
                             continue
                         else:
                             print(Fore.YELLOW + "\tEmail and password formats acceptable." + Style.RESET_ALL)
-
-
 
                         matched_student = None
 
