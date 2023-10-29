@@ -115,6 +115,7 @@ class Student:
             "Grade": grade
         }
         self.subject.append(subject_dict)
+        self.save_students_file()
         
         success_message = f"Enrolling in {subject_with_number}." \
                         f"\nYou are now enrolled in {len(self.subject)} out of 4 subjects."

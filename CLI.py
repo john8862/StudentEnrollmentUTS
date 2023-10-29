@@ -105,6 +105,7 @@ def main():
                                                 break
                                             except ValueError as e:
                                                 print(Fore.RED + "\t\t" + str(e) + Style.RESET_ALL)
+                                                break
                                 elif student_menu_choice == "r":
                                     subject_id = input("\t\tRemove subject by ID:  ")
                                     try:
