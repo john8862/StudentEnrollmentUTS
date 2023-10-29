@@ -73,7 +73,7 @@ class Validator:
         password = self.entry.get()
         errorLabel = self.errorLabel.get()
 
-        if not re.match(r"^[A-Z](?=.*\d.*\d.*\d)(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z].*[a-zA-Z]).*$", password.get()):
+        if not re.match(r"^[A-Z](?=(?:[^0-9]*[0-9]){3})(?=(?:[^a-zA-Z]*[a-zA-Z]){5}).*$", password.get()):
             self.entry.get().configure(bg_color="#FF0000", text_color="#000000")
             self.errorLabel.get().configure(
                 text="* Invalid password format!",
