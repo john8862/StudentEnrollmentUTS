@@ -129,29 +129,30 @@ def main():
 
                 elif student_choice == "r":
                     print(Fore.GREEN + "\tStudent Sign Up" + Style.RESET_ALL)
-                    
+
                     while True:
-                        while True:
+                        try:
                             email = input("\tEnter your email: ")
                             password = input("\tEnter your password: ")
+
                             if not Student.is_valid_email(email) or not Student.is_valid_password(password):
-                                print(Fore.RED + "\tIncorrect email or password format." + Style.RESET_ALL)
-                            else:
-                                existing_student = Student.get_student_by_email(email)
-                                if existing_student:
-                                    print(Fore.RED + f"\tStudent {existing_student.name} already exists" + Style.RESET_ALL)
-                                else:
-                                    print(Fore.YELLOW + "\tEmail and password formats acceptable" + Style.RESET_ALL)
-                                    break
+                                raise ValueError("\tIncorrect email or password format.")
 
-                        name = input("\tEnter your name: ")
+                            existing_student = Student.get_student_by_email(email)
+                            if existing_student:
+                                raise ValueError(f"\tStudent {existing_student.name} already exists")
 
-                        student = Student(name, email, password)
-                        print(Fore.YELLOW + f"\tEnrolling Student {name}." + Style.RESET_ALL)
-                        student_1 = '\t\t' + '\t\t'.join(str(student).splitlines(True))
-                        # print(student_1)
-                        student.save_students_file()
-                        break # Exit the outer loop once registration is successful
+                            name = input("\tEnter your name: ")
+
+                            student = Student(name, email, password)
+                            print(Fore.YELLOW + f"\tEnrolling Student {name}." + Style.RESET_ALL)
+                            student_1 = '\t\t' + '\t\t'.join(str(student).splitlines(True))
+                            student.save_students_file()
+
+                            break
+
+                        except ValueError as e:
+                            print(Fore.RED + str(e) + Style.RESET_ALL)
 
                 elif student_choice == "x":
                     break
