@@ -1,117 +1,24 @@
 import re
 import random
 import json
+import colorama
+from colorama import Fore, init, Style
+from class_student import Student, students
+from class_admin import Admin
 
-class Student:
-    def __init__(self, name, email, password, subject=[], from_file = False):
-        self.name = name
-        self.email = email
-        self.password = password
-        self.subject = subject
-        #self.subject = []
-        if not from_file:
-            self.generate_student_id()
-            self.save_students_file()
-
-
-    def generate_student_id(self):
-        # Generate a unique 6-digit student ID
-        student_id = str(len(students) + 1).zfill(6)
-        students.append(self)
-        self.student_id = student_id
-
-    @staticmethod
-    def is_valid_email(email):
-        email_pattern = r'^[a-zA-Z]+\.[a-zA-Z]+@university\.com$'
-        return re.match(email_pattern, email)
-
-    @staticmethod
-    def is_valid_password(password):
-        password_pattern = r'^[A-Z][a-zA-Z]{4,}[0-9]{3,}$'
-        return re.match(password_pattern, password)
-
-    @staticmethod
-    def is_valid_subject(subject):
-        subject_pattern = r'^[a-zA-Z ]*$'
-        return re.match(subject_pattern, subject)
-    
-    def enrol_subject(self, subject):
-        if len(self.subject) >= 4:
-            print("You have already enrolled in 4 subjects. You cannot enrol in more.")
-        else:
-            random_number = str(random.randint(0, 999)).zfill(3)
-            # 检查生成的数字是否重复
-            while any(subject.endswith(f"_{random_number}") for subject in self.subject):
-                random_number = str(random.randint(0, 999)).zfill(3)
-            # 将随机数字添加到subject中
-            subject_with_number = f"{random_number}.{subject}"
-            mark = random.randint(25, 100)
-            # 根据分数计算等级
-            if mark < 50:
-                grade = "Z"
-            elif mark < 65:
-                grade = "P"
-            elif mark < 75:
-                grade = "C"
-            elif mark < 85:
-                grade = "D"
-            else:
-                grade = "HD"
-
-            subject_with_grade = f"{subject_with_number} - Mark: {mark}, Grade: {grade}"
-
-            self.subject.append(subject_with_grade)
-            print(f"You have successfully enrolled in {subject_with_number}.")
-            self.save_students_file()
-
-    def remove_subject(self, subject):
-        if subject in self.subject:
-            self.subject.remove(subject)
-            print(f"You have successfully removed {subject} from your enrolment list.")
-            self.save_students_file()
-        else:
-            print(f"You are not enrolled in {subject}.")
-
-    def show_enrolment(self):
-        print("You are currently enrolled in the following subjects:")
-        for subject in self.subject:
-            # 提取Mark和grade
-            print(f"{subject}")
-
-
-    def save_students_file(self):
-        #__dict__ 能将每个 student 对象转换为字典形式
-        data = [student.__dict__ for student in students]
-        with open("students.data", "w") as file:
-            #将 data 列表（它包含了所有学生的信息）转换为 JSON 格式，并写入到打开的文件中。
-            json.dump(data, file)
-
-    def change_password(self, new_password):
-        if Student.is_valid_password(new_password):
-            self.password = new_password
-            print("Password successfully changed!")
-            self.save_students_file()  # Save the updated password
-        else:
-            print("Invalid password format. Password must start with an uppercase letter, contain at least 5 letters, and have 3 or more digits.")
-
-
-    def __str__(self):
-        return f"Student ID: {self.student_id}\nName: {self.name}\nEmail: {self.email}\nPassword: {self.password}\n"
-
-    def __repr__(self):
-        return f"Student ID: {self.student_id}\nName: {self.name}\nEmail: {self.email}\nPassword: {self.password}\n"
-
-students = []
-
-def main():
+def main():  
     try:
         with open("students.data", "r") as file:
             data = json.load(file)
             for student_data in data:
-                # **student_data 是 Python 中的解包（unpacking）操作
-                # 将 student_data 字典中的每一对键值对作为关键字参数传递给 Student 类的构造函数 __init__
-                id = student_data['student_id']
-                del student_data['student_id']
+                id = student_data['Student_ID']
+                del student_data['Student_ID']
+                student_data = {
+                    'name': student_data['Name'],
+                    'email': student_data['Email'],
+                    'password': student_data['Password'],
+                    'subject': student_data['Subjects'],
+                }
 
                 student = Student(**student_data, from_file = True)
                 student.student_id = id
@@ -119,96 +26,200 @@ def main():
 
     except FileNotFoundError:
         with open("students.data", "w") as file:
-            json.dump({}, file)
-
+            json.dump([], file)
 
     while True:
-        #print(f"{students}") # Print the list of students for testing purposes, need to delete in the final version
-        print("Current student list:")
-        for s in students:
-            print(s)
-        print("Welcome to the University Enrollment System")
-        print("1. Login")
-        print("2. Register a new student")
-        print("3. Exit")
-        choice = input("Select an option: ")
-        
-        
+        choice = input(Fore.CYAN + "University System: (A)dmin, (S)tudent, or X :" + Style.RESET_ALL).upper()
 
-        if choice == "1":
-            email = input("Enter your email: ")
-            password = input("Enter your password: ")
-            for student in students:
-                if student.email == email and student.password == password:
+
+        if choice == "S":
+            while True:
+                student_choice = input(Fore.CYAN + "\tStudent System(l/r/x):" + Style.RESET_ALL).lower()
+                if student_choice == "l":
+                    print(Fore.GREEN + "\tStudent Sign In" + Style.RESET_ALL)
+                    Student.load_students_from_file()
                     while True:
-                        print("1. Enrol in a subject")
-                        print("2. Remove a subject")
-                        print("3. Show enrolment list")
-                        print("4. Change password")
-                        print("5. Logout")
-                        choice = input("Select an option: ")
-                        if choice == "1":
-                            while True:
-                                subject = input("Enter the subject you want to enrol in: ")
-                                if not Student.is_valid_subject(subject):
-                                    print("Invalid subject format. Subject must only contain letters and spaces.")
-                                else:
+                        matched_student = None
+                        try:
+                            email = input("\tEnter your email: ")
+                            password = input("\tEnter your password: ")
+
+                            if not Student.is_valid_email(email) or not Student.is_valid_password(password):
+                                raise ValueError("Incorrect email or password format.")
+                                continue
+
+                            print(Fore.YELLOW + "\tEmail and password formats acceptable." + Style.RESET_ALL)
+
+                            for student in students:
+                                if student.email.lower() == email.lower() and student.password == password:
+                                    print(Fore.YELLOW + "\t\tSign in successful." + Style.RESET_ALL)
+                                    matched_student = student
                                     break
-                            student.enrol_subject(subject)
-                        elif choice == "2":
-                            subject = input("Enter the subject you want to remove:  ")
-                            student.remove_subject(subject)
-                        elif choice == '3':
-                            if student.subject == []:
-                                print("You haven't enrolled any subjects.")
-                            else:
-                                student.show_enrolment()
-                        elif choice == '4':
-                            new_password = input("Enter your new password: ")
-                            student.change_password(new_password)
-                        elif choice == '5':
+
+                            if not matched_student:
+                                if not Student.is_email_exists(email):
+                                    raise ValueError("Student does not exist.")
+                                else:
+                                    raise ValueError("Invalid email or password.")
+
+                        except ValueError as e:
+                            print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
+
+                            if str(e) in ["Student does not exist.", "Invalid email or password."]:
+                                break
+
+                        back_to_main_menu = False
+                        if matched_student:                 
+                            while True:
+                                student_menu_choice = input(Fore.CYAN + "\t\tStudent Course Menu (c/e/r/s/x):" + Style.RESET_ALL).lower()
+                                if student_menu_choice == "c":
+                                    print(Fore.YELLOW + "\t\tUpdating Password." + Style.RESET_ALL)
+                                    while True:
+                                        new_password = input("\t\tNew password: ")
+                                        confirm_password = input("\t\tConfirm password: ")
+                                        if new_password == confirm_password:
+                                            student.change_password(new_password)
+                                            break
+                                        else:
+                                            print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
+                                            Confirm = None
+                                            while True:
+                                                confirm_password = input("\t\tConfirm password: ")
+                                                if new_password == confirm_password:
+                                                    student.change_password(new_password)
+                                                    Confirm = True
+                                                    break
+                                                else:
+                                                    print(Fore.RED + "\t\tPassword does not match - try again" + Style.RESET_ALL)
+                                            if Confirm == True:
+                                                break
+                                elif student_menu_choice == "e":
+                                    while True:
+                                        subject = input("\t\tEnter the subject you want to enrol in: ")
+                                        if not Student.is_valid_subject(subject):
+                                            print(Fore.RED + "\t\tInvalid subject format. Subject must only contain letters and spaces." + Style.RESET_ALL)
+                                        else:
+                                            try:
+                                                message = student.enrol_subject(subject)
+                                                print(Fore.YELLOW + "\t\t" + message.replace('\n', '\n\t\t') + Style.RESET_ALL)
+                                                break
+                                            except ValueError as e:
+                                                print(Fore.RED + "\t\t" + str(e) + Style.RESET_ALL)
+                                                break
+                                elif student_menu_choice == "r":
+                                    subject_id = input("\t\tRemove subject by ID:  ")
+                                    try:
+                                        message = student.remove_subject(subject_id)
+                                        print(Fore.YELLOW + "\t\t" + message.replace('\n', '\n\t\t') + Style.RESET_ALL)
+                                    except ValueError as e:
+                                        print(Fore.RED + "\t\t" + str(e) + Style.RESET_ALL)
+
+                                elif student_menu_choice == "s":
+                                    student.show_enrolment()
+                                elif student_menu_choice == "x":
+                                    back_to_main_menu = True
+                                    break
+                                else:
+                                    print(Fore.RED + "\t\tInvalid choice. Please select a valid option." + Style.RESET_ALL)
+                            if back_to_main_menu:
+                                break
+
+                elif student_choice == "r":
+                    print(Fore.GREEN + "\tStudent Sign Up" + Style.RESET_ALL)
+
+                    while True:
+                        try:
+                            email = input("\tEnter your email: ")
+                            password = input("\tEnter your password: ")
+
+                            if not Student.is_valid_email(email) or not Student.is_valid_password(password):
+                                raise ValueError("\tIncorrect email or password format.")
+                            
+                            print(Fore.YELLOW + "\tEmail and password formats acceptable." + Style.RESET_ALL)
+                            
+                            existing_student = Student.get_student_by_email(email)
+                            if existing_student:
+                                raise ValueError(f"\tStudent {existing_student.name} already exists")
+
+                            name = input("\tEnter your name: ")
+
+                            student = Student(name, email, password)
+                            print(Fore.YELLOW + f"\tEnrolling Student {name}." + Style.RESET_ALL)
+                            student_1 = '\t\t' + '\t\t'.join(str(student).splitlines(True))
+                            student.save_students_file()
+
                             break
-                        else:
-                            print("Invalid choice. Please select a valid option.")
-                    break
-            else:
-                print("Invalid email or password.")
 
-            
-        elif choice == '2':
-            name = input("Enter your name: ")
-            
-            while True:
-                email = input("Enter your email: ")
-                if not Student.is_valid_email(email):
-                    print("Invalid email format. Email should be in the format 'firstname.lastname@university.com'.")
+                        except ValueError as e:
+                            print(Fore.RED + str(e) + Style.RESET_ALL)
+
+                elif student_choice == "x":
+                    break
+
                 else:
-                    break
-
+                    print(Fore.RED + "\tInvalid choice. Please select a valid option." + Style.RESET_ALL)
+                    continue
             
+
+
+        elif choice == 'A':
+
             while True:
-                password = input("Enter your password: ")
-                if not Student.is_valid_password(password):
-                    print("Invalid password. Password must start with an uppercase letter, contain at least 5 letters, and have 3 or more digits.")
-                else:
+                admin_choice = input(Fore.CYAN + "\tAdmin System (c/g/p/r/s/x): " + Style.RESET_ALL)
+
+                if admin_choice == "c":
+                    print(Fore.YELLOW + "\tClearing students database" + Style.RESET_ALL)
+                    print(Fore.RED + "\tAre you sure you want to clear the database (Y)ES/(N)O: ", end='' + Style.RESET_ALL)
+                    
+                    try:
+                        message = Admin.clear_all_students()
+                        print(Fore.YELLOW + message + Style.RESET_ALL)
+                    except ValueError as e:
+                        print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
+
+                elif admin_choice == "g":
+                    print(Fore.YELLOW + "\tGrade Grouping" + Style.RESET_ALL)
+                    grade_students_dict = Admin.list_students_by_all_grades()
+                    for grade, grade_subjects in grade_students_dict.items():
+                        if grade_subjects:
+                            print(f"\t{grade} --> ", end="")
+                            Admin.print_student_subjects(grade_subjects)
+                        
+                elif admin_choice == "p":
+                    passed_subjects, failed_subjects, no_record_subjects = Admin.partition_students_pass_fail()
+                    print(Fore.YELLOW + "\tPASS/FALL Partition" + Style.RESET_ALL)
+
+                    print("\tPASS --> ", end="")
+                    Admin.print_student_subjects(passed_subjects)
+
+                    print("\tFAIL --> ", end="")
+                    Admin.print_student_subjects(failed_subjects)
+
+                    print("\tNORECORD --> ", end="")
+                    Admin.print_student_subjects(no_record_subjects)
+                    
+                elif admin_choice == "r":
+                    try:
+                        id = input("\tRemove by ID: ")
+                        message = Admin.remove_student(id)
+                        print(Fore.YELLOW + "\t" + message + Style.RESET_ALL)
+                    except ValueError as e:
+                        print(Fore.RED + "\t" + str(e) + Style.RESET_ALL)
+
+                elif admin_choice == "s":
+                    Admin.view_all_students()
+
+                elif admin_choice == "x":
                     break
+                else:
+                    print(Fore.RED + "\tInvalid choice. Please select a valid option.")
 
-            
-            student = Student(name, email, password)
-            print("Registration successful!")
-            print(student)
-            student.save_students_file()
-
-            #print("Current student list:") #This function should me migrate to the admin session.
-            #for s in students:
-            #    print(s)
-                
-        elif choice == '3':
-            print("Exiting the program.")
+        elif choice == 'X':
+            print(Fore.YELLOW + "Thank you" + Style.RESET_ALL)
             break
         else:
-            print("Invalid choice. Please select a valid option.")
-
+            print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
+            continue
 
 if __name__ == "__main__":
     main()
