@@ -6,9 +6,7 @@ from colorama import Fore, init, Style
 from class_student import Student, students
 from class_admin import Admin
 
-def main():
-    
-    
+def main():  
     try:
         with open("students.data", "r") as file:
             data = json.load(file)
@@ -19,7 +17,7 @@ def main():
                     'name': student_data['Name'],
                     'email': student_data['Email'],
                     'password': student_data['Password'],
-                    'subjectl': student_data['Subjects'],
+                    'subject': student_data['Subjects'],
                 }
                 # **student_data 是 Python 中的解包（unpacking）操作
                 # 将 student_data 字典中的每一对键值对作为关键字参数传递给 Student 类的构造函数 __init__
@@ -102,7 +100,12 @@ def main():
                                             break
                                 elif student_menu_choice == "r":
                                     subject_id = input("\t\tRemove subject by ID:  ")
-                                    student.remove_subject(subject_id)
+                                    try:
+                                        message = student.remove_subject(subject_id)
+                                        print(Fore.YELLOW + "\t\t" + message.replace('\n', '\n\t\t') + Style.RESET_ALL)
+                                    except ValueError as e:
+                                        print(Fore.RED + "\t\t" + str(e) + Style.RESET_ALL)
+
                                 elif student_menu_choice == "s":
                                     student.show_enrolment()
                                 elif student_menu_choice == "x":

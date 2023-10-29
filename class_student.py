@@ -125,15 +125,15 @@ class Student:
             self.save_students_file()
 
     def remove_subject(self, subject_id):
+
         for subject in self.subject:
             if str(subject['ID']) == str(subject_id):
-                print(Fore.YELLOW + f"\t\tDropping {subject['Subject']}-{subject['ID']}." + Style.RESET_ALL)
                 self.subject.remove(subject)
-                print(Fore.YELLOW + f"\t\tYou are now enrolled in {len(self.subject)} out of 4 subjects." + Style.RESET_ALL)
-                # Assuming there's a method to save to a file
                 self.save_students_file()
-                return
-        print(f"\t\tYou are not enrolled in a subject with [{subject_id}].")
+                return f"Dropping {subject['Subject']}-{subject['ID']}." \
+                       f"\nYou are now enrolled in {len(self.subject)} out of 4 subjects."
+                
+        raise ValueError(f"You are not enrolled in a subject witlh ID [{subject_id}].")
 
     def show_enrolment(self):
         print(Fore.YELLOW + f"\t\tShowing {len(self.subject)} subjects." + Style.RESET_ALL)
