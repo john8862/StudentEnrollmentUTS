@@ -134,7 +134,7 @@ class Admin:
         global students
         confirmation = input().strip().upper()
         if confirmation == 'Y':
-            students = []
+            students.clear()
             with open("students.data", "w") as file:
                 json.dump([], file)
             return "\tStudents data cleared."

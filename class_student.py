@@ -131,7 +131,7 @@ class Student:
                 return f"Dropping {subject['Subject']}-{subject['ID']}." \
                        f"\nYou are now enrolled in {len(self.subject)} out of 4 subjects."
                 
-        raise ValueError(f"You are not enrolled in a subject witlh ID [{subject_id}].")
+        raise ValueError(f"You are not enrolled in a subject with ID [{subject_id}].")
 
     def show_enrolment(self):
         print(Fore.YELLOW + f"\t\tShowing {len(self.subject)} subjects." + Style.RESET_ALL)
